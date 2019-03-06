@@ -12,17 +12,10 @@ class ApiController extends ActionController
 {
     public function pagesAction()
     {
-        $root = array_key_exists('root', $_REQUEST) ? intval($_REQUEST['root']) : -1;
-        $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $root);
+        $pid = array_key_exists('pid', $_REQUEST) ? intval($_REQUEST['pid']) : -1;
+        $uid = array_key_exists('uid', $_REQUEST) ? intval($_REQUEST['uid']) : 0;
 
-        $result = [];
-        while ($row = $statement->fetch()) {
-            $mapping = $this->settings['mapping']['pages'];
-            if (!array_key_exists('uid', $mapping)) {
-                $mapping['uid'] = [ 'type' => 'int' ];
-            }
-            $result[] = $this->transform($row, $mapping, 'pages');
-        }
+        $result = $this->fetch_page_data($pid, $uid);
 
         return json_encode($result);
 
@@ -34,13 +27,14 @@ class ApiController extends ActionController
 
         $statement = $this->fetch('tt_content', array_keys($this->settings['mapping']['tt_content']), $page);
 
-        $result = [];
+        $result = ['page' => $this->fetch_page_data(-1, $page)[0], 'content' => []];
+
         while ($row = $statement->fetch()) {
             $mapping = $this->settings['mapping']['tt_content'];
             if (!array_key_exists('uid', $mapping)) {
                 $mapping['uid'] = [ 'type' => 'int' ];
             }
-            $result[] = $this->transform($row, $mapping, 'tt_content');
+            $result['content'][] = $this->transform($row, $mapping, 'tt_content');
         }
 
         return json_encode($result);
@@ -113,7 +107,23 @@ class ApiController extends ActionController
     }
 
 
-    protected function fetch($table, array $fields, $pid = -1, $limit = 0, $includeHidden = false, $orderBy = 'sorting')
+    protected function fetch_page_data($pid, $uid)
+    {
+        $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $pid, $uid);
+
+        $result = [];
+        while ($row = $statement->fetch()) {
+            $mapping = $this->settings['mapping']['pages'];
+            if (!array_key_exists('uid', $mapping)) {
+                $mapping['uid'] = [ 'type' => 'int' ];
+            }
+            $result[] = $this->transform($row, $mapping, 'pages');
+        }
+
+        return $result;
+    }
+
+    protected function fetch($table, array $fields, $pid = -1, $uid = 0, $limit = 0, $includeHidden = false, $orderBy = 'sorting')
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $query = $queryBuilder
@@ -131,6 +141,14 @@ class ApiController extends ActionController
                 $queryBuilder->expr()->eq(
                     'pid',
                     $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                )
+            );
+        }
+        if ($uid > 0) {
+            $query->andWhere(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                 )
             );
         }
@@ -207,6 +225,7 @@ class ApiController extends ActionController
                     // $fileObjects = $fileRepository->findByRelation($table, $fieldId, $row['uid']);
                     // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($fileObjects, __LINE__ . ' in ' . __CLASS__ );
                     $selection = isset($fieldConfig['select']) ? explode(',', $fieldConfig['select']) : ['uid'];
+
                     $value = $this->fetch_image_references($table, $fieldId, $row['uid'], $selection)->fetchAll();
                     break;
                 default:

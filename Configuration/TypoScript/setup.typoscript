@@ -99,6 +99,10 @@ headless_pages {
         debug = 0
         no_cache = 1
         additionalHeaders {
+            5 {
+              header = Access-Control-Allow-Origin: *
+              replace = 1
+            }
             10 {
                 header = Content-Type: application/json
                 replace = 1
@@ -132,6 +136,10 @@ headless_content {
         debug = 0
         no_cache = 1
         additionalHeaders {
+            5 {
+              header = Access-Control-Allow-Origin: *
+              replace = 1
+            }
             10 {
                 header = Content-Type: application/json
                 replace = 1
@@ -174,6 +182,12 @@ image_content {
         vendorName = Lfda
         controller = Api
         action = image
+        additionalHeaders {
+          5 {
+            header = Access-Control-Allow-Origin: *
+            replace = 1
+          }
+        }
         switchableControllerActions {
             Api {
                 1 = image
