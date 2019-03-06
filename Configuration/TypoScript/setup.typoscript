@@ -1,0 +1,38 @@
+headless_pages = PAGE
+headless_pages {
+    typeNum = 2342
+
+    config {
+        disableAllHeaderCode = 1
+        disableBodyTag = true
+        debug = 0
+        no_cache = 1
+        additionalHeaders {
+            10 {
+                header = Content-Type: application/json
+                replace = 1
+            }
+        }
+    }
+
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = Headless
+        pluginName = Api
+        vendorName = Lfda
+        controller = Api
+        action = pages
+    }
+
+
+    // 20 < tt_content.list.20.headless_api
+
+}
+
+headless_content = PAGE
+headless_content {
+    typeNum = 2343
+
+
+}

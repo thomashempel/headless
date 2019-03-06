@@ -1,0 +1,19 @@
+{
+    "name": "lfda/headless",
+    "description": "Attempt to make TYPO3 headless",
+    "license": ["GPL-2.0-or-later"],
+    "autoload": {
+        "psr-4": {
+            "Lfda\\Headless\\": "Classes/"
+        }
+    },
+    "type": "typo3-cms-extension",
+    "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Thomas Hempel",
+            "email": "thomas.hempel@lfda.de"
+        }
+    ],
+    "minimum-stability": "dev"
+}
