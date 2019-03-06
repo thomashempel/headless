@@ -1,3 +1,94 @@
+plugin.tx_headless_api {
+  settings {
+    mapping {
+      pages {
+        uid {
+          type = int
+        }
+        pid {
+          type = int
+          name = parent
+        }
+        hidden {
+          type = bool
+        }
+        crdate {
+          type = datetime
+        }
+        tstamp {
+          type = datetime
+          name = last_change
+        }
+        title {
+          type = string
+        }
+        slug {
+          type = string
+        }
+        starttime {
+          type = datetime
+        }
+        endtime {
+          type = datetime
+        }
+        fe_group {
+          type = int
+        }
+        sorting {
+          type = int
+        }
+        doktype {
+          type = int
+        }
+        subtitle {
+          type = string
+        }
+        media {
+          type = images
+          select = uid, title, description, alternative
+        }
+        nav_title {
+          type = string
+        }
+        nav_hide {
+          type = bool
+        }
+      }
+
+      tt_content {
+        uid {
+          type = int
+        }
+        crdate {
+          type = datetime
+        }
+        header {
+          type = string
+        }
+        subheader {
+          type = string
+        }
+        bodytext {
+          type = string
+        }
+        image {
+          type = images
+          select = uid, title, description, alternative
+        }
+        CType {
+          type = string
+        }
+        list_type {
+          type = string
+        }
+        sorting {
+          type = int
+        }
+      }
+    }
+  }
+}
+
 headless_pages = PAGE
 headless_pages {
     typeNum = 2342
@@ -23,16 +114,70 @@ headless_pages {
         vendorName = Lfda
         controller = Api
         action = pages
+        switchableControllerActions {
+            Api {
+                1 = pages
+            }
+        }
     }
-
-
-    // 20 < tt_content.list.20.headless_api
-
 }
 
 headless_content = PAGE
 headless_content {
     typeNum = 2343
 
+    config {
+        disableAllHeaderCode = 1
+        disableBodyTag = true
+        debug = 0
+        no_cache = 1
+        additionalHeaders {
+            10 {
+                header = Content-Type: application/json
+                replace = 1
+            }
+        }
+    }
 
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = Headless
+        pluginName = Api
+        vendorName = Lfda
+        controller = Api
+        action = content
+        switchableControllerActions {
+            Api {
+                1 = content
+            }
+        }
+    }
+}
+
+image_content = PAGE
+image_content {
+    typeNum = 2344
+
+    config {
+        disableAllHeaderCode = 1
+        disableBodyTag = true
+        debug = 0
+        no_cache = 1
+    }
+
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = Headless
+        pluginName = Api
+        vendorName = Lfda
+        controller = Api
+        action = image
+        switchableControllerActions {
+            Api {
+                1 = image
+            }
+        }
+    }
 }
