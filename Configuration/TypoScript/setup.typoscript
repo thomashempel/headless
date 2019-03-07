@@ -1,5 +1,9 @@
 plugin.tx_headless_api {
   settings {
+    allowedRecords {
+      1 = tt_address
+    }
+
     mapping {
       pages {
         uid {
@@ -39,6 +43,10 @@ plugin.tx_headless_api {
         }
         doktype {
           type = int
+          mapStatic {
+            1 = page
+            254 = folder
+          }
         }
         subtitle {
           type = string
@@ -89,107 +97,80 @@ plugin.tx_headless_api {
   }
 }
 
-headless_pages = PAGE
+headless_base = PAGE
+headless_base {
+
+  config {
+    disableAllHeaderCode = 1
+    disableBodyTag = true
+    debug = 0
+    no_cache = 0
+    additionalHeaders {
+      10 {
+        header = Access-Control-Allow-Origin: {$headless.header.allow-origin}
+        replace = 1
+      }
+      20 {
+        header = Content-Type: application/json
+        replace = 1
+      }
+    }
+  }
+
+  10 = USER
+  10 {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = Headless
+    pluginName = Api
+    vendorName = Lfda
+    controller = Headless
+
+    switchableControllerActions {
+      Headless {
+
+      }
+    }
+  }
+}
+
+headless_pages < headless_base
 headless_pages {
     typeNum = 2342
 
-    config {
-        disableAllHeaderCode = 1
-        disableBodyTag = true
-        debug = 0
-        no_cache = 1
-        additionalHeaders {
-            5 {
-              header = Access-Control-Allow-Origin: *
-              replace = 1
-            }
-            10 {
-                header = Content-Type: application/json
-                replace = 1
-            }
-        }
-    }
-
-    10 = USER
     10 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-        extensionName = Headless
-        pluginName = Api
-        vendorName = Lfda
-        controller = Api
         action = pages
         switchableControllerActions {
-            Api {
+            Headless {
                 1 = pages
             }
         }
     }
 }
 
-headless_content = PAGE
+headless_content < headless_base
 headless_content {
     typeNum = 2343
 
-    config {
-        disableAllHeaderCode = 1
-        disableBodyTag = true
-        debug = 0
-        no_cache = 1
-        additionalHeaders {
-            5 {
-              header = Access-Control-Allow-Origin: *
-              replace = 1
-            }
-            10 {
-                header = Content-Type: application/json
-                replace = 1
-            }
-        }
-    }
-
-    10 = USER
     10 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-        extensionName = Headless
-        pluginName = Api
-        vendorName = Lfda
-        controller = Api
         action = content
         switchableControllerActions {
-            Api {
+            Headless {
                 1 = content
             }
         }
     }
 }
 
-image_content = PAGE
+image_content < headless_base
 image_content {
     typeNum = 2344
 
-    config {
-        disableAllHeaderCode = 1
-        disableBodyTag = true
-        debug = 0
-        no_cache = 1
-    }
+    config.additionalHeaders.20 >
 
-    10 = USER
     10 {
-        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-        extensionName = Headless
-        pluginName = Api
-        vendorName = Lfda
-        controller = Api
         action = image
-        additionalHeaders {
-          5 {
-            header = Access-Control-Allow-Origin: *
-            replace = 1
-          }
-        }
         switchableControllerActions {
-            Api {
+            Headless {
                 1 = image
             }
         }

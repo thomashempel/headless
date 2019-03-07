@@ -8,7 +8,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Service\ImageService;
 
-class ApiController extends ActionController
+class HeadlessController extends ActionController
 {
     public function pagesAction()
     {
@@ -115,7 +115,6 @@ class ApiController extends ActionController
                 return $processedImage->getContents();
         }
     }
-
 
     protected function fetch_page_data($pid, $uid = 0)
     {
@@ -236,13 +235,18 @@ class ApiController extends ActionController
                     // $fileObjects = $fileRepository->findByRelation($table, $fieldId, $row['uid']);
                     // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($fileObjects, __LINE__ . ' in ' . __CLASS__ );
                     $selection = isset($fieldConfig['select']) ? explode(',', $fieldConfig['select']) : ['uid'];
-
                     $value = $this->fetch_image_references($table, $fieldId, $row['uid'], $selection)->fetchAll();
                     break;
                 default:
                     break;
             }
 
+            // Map value to static values
+            if (isset($fieldConfig['mapStatic']) && isset($fieldConfig['mapStatic'][$value])) {
+                $value = $fieldConfig['mapStatic'][$value];
+            }
+
+            // If a name is set, return the value as the defined field
             if (isset($fieldConfig['name'])) {
                 $result[$fieldConfig['name']] = $value;
             } else {

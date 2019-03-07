@@ -8,7 +8,7 @@ call_user_func(
             'Lfda.Headless',
             'Api',
             [
-                'Api' => 'pages, content, image'
+                'Headless' => 'pages, content, records, image'
             ]
         );
     }
