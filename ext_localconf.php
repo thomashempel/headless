@@ -9,10 +9,6 @@ call_user_func(
             'Api',
             [
                 'Api' => 'pages, content, image'
-            ],
-            // non-cacheable actions
-            [
-                'Api' => 'pages, content, image'
             ]
         );
     }
@@ -20,3 +16,11 @@ call_user_func(
 
 // Define TypoScript as content rendering template
 $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] = 'headless/Configuration/TypoScript/';
+
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['headless_content'])) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['headless_content'] = array();
+}
+
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['headless_pages'])) {
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['headless_pages'] = array();
+}

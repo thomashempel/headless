@@ -1,0 +1,6 @@
+headless {
+  header {
+    # cat=headless/header; type=string; label=Allowed origins
+    allow-origin = *
+  }
+}

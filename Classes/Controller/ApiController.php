@@ -12,37 +12,47 @@ class ApiController extends ActionController
 {
     public function pagesAction()
     {
-        $pid = array_key_exists('pid', $_REQUEST) ? intval($_REQUEST['pid']) : -1;
-        $uid = array_key_exists('uid', $_REQUEST) ? intval($_REQUEST['uid']) : 0;
-
-        $result = $this->fetch_page_data($pid, $uid);
+        $page_data = $this->configurationManager->getContentObject()->data;
+        $result = $this->fetch_page_data($page_data['uid']);
 
         return json_encode($result);
-
     }
 
     public function contentAction()
     {
-        $page = intval($_REQUEST['page']);
+        $cacheIdentifier = sha1($GLOBALS['TSFE']->id);
+        $cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('headless_content');
 
-        $statement = $this->fetch('tt_content', array_keys($this->settings['mapping']['tt_content']), $page);
+        if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
+            $page_data = $this->configurationManager->getContentObject()->data;
+            $mapping = $this->settings['mapping']['pages'];
+            $result = ['page' => $this->transform($page_data, $mapping, 'pages'), 'content' => []];
 
-        $result = ['page' => $this->fetch_page_data(-1, $page)[0], 'content' => []];
-
-        while ($row = $statement->fetch()) {
+            $statement = $this->fetch('tt_content', array_keys($this->settings['mapping']['tt_content']), $page_data['uid']);
             $mapping = $this->settings['mapping']['tt_content'];
             if (!array_key_exists('uid', $mapping)) {
                 $mapping['uid'] = [ 'type' => 'int' ];
             }
-            $result['content'][] = $this->transform($row, $mapping, 'tt_content');
+
+            while ($row = $statement->fetch()) {
+                $result['content'][] = $this->transform($row, $mapping, 'tt_content');
+            }
+
+            $entry = json_encode($result);
+            $cache->set(
+                $cacheIdentifier,
+                $entry,
+                explode(',', $page_data['cache_tags']),
+                $page_data['cache_timeout'] > 0 ? $page_data['cache_timeout'] : 60
+            );
+
         }
 
-        return json_encode($result);
+        return $entry;
     }
 
     public function imageAction()
     {
-
         $imageUid = intval($_REQUEST['uid']);
 
         $imageService = $this->objectManager->get(ImageService::class);
@@ -107,7 +117,7 @@ class ApiController extends ActionController
     }
 
 
-    protected function fetch_page_data($pid, $uid)
+    protected function fetch_page_data($pid, $uid = 0)
     {
         $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $pid, $uid);
 
@@ -217,7 +227,8 @@ class ApiController extends ActionController
                 case 'datetime':
                     $o = new \DateTime();
                     $o->setTimestamp(intval($value));
-                    $o->setTimezone(date_default_timezone_get());
+                    $tz = new \DateTimeZone(date_default_timezone_get());
+                    $o->setTimezone($tz);
                     $value = $o;
                     break;
                 case 'images':
@@ -241,5 +252,4 @@ class ApiController extends ActionController
 
         return $result;
     }
-
 }
