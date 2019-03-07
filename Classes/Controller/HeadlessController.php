@@ -51,6 +51,34 @@ class HeadlessController extends ActionController
         return $entry;
     }
 
+    public function recordsAction()
+    {
+        $tables = GeneralUtility::trimExplode(',', $_REQUEST['t']);
+        $records = [];
+
+        foreach ($tables as $shortname) {
+            if (array_key_exists($shortname, $this->settings['allowedRecords'])) {
+                $table = $this->settings['allowedRecords'][$shortname];
+                if (array_key_exists($table, $this->settings['mapping'])) {
+                    $statement = $this->fetch($table, array_keys($this->settings['mapping'][$table]), $GLOBALS['TSFE']->id);
+                    $result = [];
+
+                    while ($row = $statement->fetch()) {
+                        $mapping = $this->settings['mapping'][$table];
+                        if (!array_key_exists('uid', $mapping)) {
+                            $mapping['uid'] = [ 'type' => 'int' ];
+                        }
+                        $result[] = $this->transform($row, $mapping, $table);
+                    }
+
+                    $records[$shortname] = $result;
+                }
+            }
+        }
+
+        return json_encode($records);
+    }
+
     public function imageAction()
     {
         $imageUid = intval($_REQUEST['uid']);

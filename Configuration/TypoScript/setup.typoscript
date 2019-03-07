@@ -1,10 +1,36 @@
 plugin.tx_headless_api {
   settings {
     allowedRecords {
-      1 = tt_address
+      newstag = tx_news_domain_model_tag
+      news = tx_news_domain_model_news
     }
 
     mapping {
+
+      tx_news_domain_model_tag {
+        uid {
+          type = int
+        }
+        title {
+          type = string
+        }
+      }
+
+      tx_news_domain_model_news {
+        uid {
+          type = int
+        }
+        title {
+          type = string
+        }
+        teaser {
+          type = string
+        }
+        bodytext {
+          type = string
+        }
+      }
+
       pages {
         uid {
           type = int
@@ -124,12 +150,6 @@ headless_base {
     pluginName = Api
     vendorName = Lfda
     controller = Headless
-
-    switchableControllerActions {
-      Headless {
-
-      }
-    }
   }
 }
 
@@ -138,12 +158,12 @@ headless_pages {
     typeNum = 2342
 
     10 {
-        action = pages
-        switchableControllerActions {
-            Headless {
-                1 = pages
-            }
+      action = pages
+      switchableControllerActions {
+        Headless {
+          1 = pages
         }
+      }
     }
 }
 
@@ -152,27 +172,41 @@ headless_content {
     typeNum = 2343
 
     10 {
-        action = content
-        switchableControllerActions {
-            Headless {
-                1 = content
-            }
+      action = content
+      switchableControllerActions {
+        Headless {
+          1 = content
         }
+      }
     }
 }
 
-image_content < headless_base
-image_content {
-    typeNum = 2344
+headless_records < headless_base
+headless_records {
+  typeNum = 2345
 
-    config.additionalHeaders.20 >
-
-    10 {
-        action = image
-        switchableControllerActions {
-            Headless {
-                1 = image
-            }
-        }
+  10 {
+    action = records
+    switchableControllerActions {
+      Headless {
+        1 = records
+      }
     }
+  }
+}
+
+headless_image < headless_base
+headless_image {
+  typeNum = 2344
+
+  config.additionalHeaders.20 >
+
+  10 {
+    action = image
+    switchableControllerActions {
+      Headless {
+        1 = image
+      }
+    }
+  }
 }
