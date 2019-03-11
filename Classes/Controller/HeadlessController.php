@@ -4,26 +4,27 @@ namespace Lfda\Headless\Controller;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Service\ImageService;
 
 class HeadlessController extends ActionController
 {
+
     public function pagesAction()
     {
-        $page_data = $this->configurationManager->getContentObject()->data;
-        $result = $this->fetch_page_data($page_data['uid']);
-
+        $r = intval($_REQUEST['r'] > 1) ? intval($_REQUEST['r']) : 1;
+        $result = $this->fetch_page_data(intval($GLOBALS['TSFE']->id), $r);
         return json_encode($result);
     }
 
     public function contentAction()
     {
-        $cacheIdentifier = sha1($GLOBALS['TSFE']->id);
-        $cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('headless_content');
+        // $cacheIdentifier = sha1($GLOBALS['TSFE']->id);
+        // $cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('headless_content');
 
-        if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
+        // if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
             $page_data = $this->configurationManager->getContentObject()->data;
             $mapping = $this->settings['mapping']['pages'];
             $result = ['page' => $this->transform($page_data, $mapping, 'pages'), 'content' => []];
@@ -34,11 +35,42 @@ class HeadlessController extends ActionController
                 $mapping['uid'] = [ 'type' => 'int' ];
             }
 
+            $render_config = null;
+            if (array_key_exists('tt_content', $this->settings['rendering'])) {
+                $render_config = $this->settings['rendering']['tt_content'];
+            }
+
             while ($row = $statement->fetch()) {
-                $result['content'][] = $this->transform($row, $mapping, 'tt_content');
+                $transformed = $this->transform($row, $mapping, 'tt_content');
+
+                // rendering
+                if ($render_config) {
+                    foreach ($render_config as $target_key => $config) {
+                        if ($this->matches($config, $transformed)) {
+                            $renderer = GeneralUtility::makeInstance($config['renderer']);
+                            $transformed[$target_key] = $renderer->execute($transformed);
+
+                            // $newsController = GeneralUtility::makeInstance(NewsController::class);
+                            // $transformed[$target_key] = $newsController->getSettings();
+                            /*
+                            try {
+                                $renderer = new $config['renderer'];
+                                $transformed[$target_key] = $renderer->execute($transformed);
+                            } catch (Exception $exception) {
+                                $transformed[$target_key] = 'Can\'t find renderer!!!';
+                            }
+                            */
+                        } else {
+                            $transformed[$target_key] = false;
+                        }
+                    }
+                }
+
+                $result['content'][] = $transformed;
             }
 
             $entry = json_encode($result);
+            /*
             $cache->set(
                 $cacheIdentifier,
                 $entry,
@@ -47,8 +79,18 @@ class HeadlessController extends ActionController
             );
 
         }
-
+        */
         return $entry;
+    }
+
+    protected function matches($config, $row) {
+        foreach ($config['matching'] as $key => $value) {
+            if (!array_key_exists($key, $row) || $row[$key] != $value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function recordsAction()
@@ -144,9 +186,9 @@ class HeadlessController extends ActionController
         }
     }
 
-    protected function fetch_page_data($pid, $uid = 0)
+    protected function fetch_page_data($pid, $recursive = 1)
     {
-        $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $pid, $uid);
+        $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $pid);
 
         $result = [];
         while ($row = $statement->fetch()) {
@@ -154,7 +196,16 @@ class HeadlessController extends ActionController
             if (!array_key_exists('uid', $mapping)) {
                 $mapping['uid'] = [ 'type' => 'int' ];
             }
-            $result[] = $this->transform($row, $mapping, 'pages');
+            $page = $this->transform($row, $mapping, 'pages');
+
+            if ($recursive > 1) {
+                $children = $this->fetch_page_data($page['uid'], --$recursive);
+                if (count($children) > 0) {
+                    $page['__children'] = $this->fetch_page_data($page['uid'], --$recursive);
+                }
+            }
+
+            $result[] = $page;
         }
 
         return $result;
@@ -245,12 +296,15 @@ class HeadlessController extends ActionController
                 case 'int':
                     $value = intval($value);
                     break;
+
                 case 'string':
                     $value = strval($value);
                     break;
+
                 case 'bool':
                     $value = boolval($value);
                     break;
+
                 case 'datetime':
                     $o = new \DateTime();
                     $o->setTimestamp(intval($value));
@@ -258,6 +312,7 @@ class HeadlessController extends ActionController
                     $o->setTimezone($tz);
                     $value = $o;
                     break;
+
                 case 'images':
                     // $fileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
                     // $fileObjects = $fileRepository->findByRelation($table, $fieldId, $row['uid']);
@@ -265,6 +320,12 @@ class HeadlessController extends ActionController
                     $selection = isset($fieldConfig['select']) ? explode(',', $fieldConfig['select']) : ['uid'];
                     $value = $this->fetch_image_references($table, $fieldId, $row['uid'], $selection)->fetchAll();
                     break;
+
+                case 'flexform':
+                    $ffs = GeneralUtility::makeInstance(FlexFormService::class);
+                    $value = $ffs->convertFlexFormContentToArray($value);
+                    break;
+
                 default:
                     break;
             }
@@ -275,8 +336,8 @@ class HeadlessController extends ActionController
             }
 
             // If a name is set, return the value as the defined field
-            if (isset($fieldConfig['name'])) {
-                $result[$fieldConfig['name']] = $value;
+            if (isset($fieldConfig['as'])) {
+                $result[$fieldConfig['as']] = $value;
             } else {
                 $result[$fieldId] = $value;
             }

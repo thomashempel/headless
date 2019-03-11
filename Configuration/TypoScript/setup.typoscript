@@ -1,8 +1,25 @@
 plugin.tx_headless_api {
   settings {
+
+    meta {
+      rootPage = 1
+    }
+
     allowedRecords {
       newstag = tx_news_domain_model_tag
       news = tx_news_domain_model_news
+    }
+
+    rendering {
+      tt_content {
+        news_data {
+          matching {
+            CType = list
+            list_type = news_pi1
+          }
+          renderer = Lfda\Headless\Renderer\NewsRenderer
+        }
+      }
     }
 
     mapping {
@@ -37,7 +54,7 @@ plugin.tx_headless_api {
         }
         pid {
           type = int
-          name = parent
+          as = parent
         }
         hidden {
           type = bool
@@ -47,7 +64,7 @@ plugin.tx_headless_api {
         }
         tstamp {
           type = datetime
-          name = last_change
+          as = last_change
         }
         title {
           type = string
@@ -115,6 +132,10 @@ plugin.tx_headless_api {
         list_type {
           type = string
         }
+        pi_flexform {
+          type = flexform
+          as = flexform
+        }
         sorting {
           type = int
         }
@@ -130,14 +151,14 @@ headless_base {
     disableAllHeaderCode = 1
     disableBodyTag = true
     debug = 0
-    no_cache = 0
+    no_cache = 1
     additionalHeaders {
       10 {
         header = Access-Control-Allow-Origin: {$headless.header.allow-origin}
         replace = 1
       }
       20 {
-        header = Content-Type: application/json
+        # header = Content-Type: application/json
         replace = 1
       }
     }
