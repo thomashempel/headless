@@ -128,11 +128,29 @@ class HeadlessController extends ActionController
         $imageService = $this->objectManager->get(ImageService::class);
 
         $image = $imageService->getImage($imageUid, null, true);
-        $cropString = $_REQUEST['crop'];
+        $cropString = null;
+        if (isset($_REQUEST['c'])) {
+            list($x, $y, $w, $h) = GeneralUtility::trimExplode(',', $_REQUEST['c']);
+
+            $cropString = json_encode([
+                'default' => [
+                    'cropArea' => [
+                        'x' => floatval($x),
+                        'y' => floatval($y),
+                        'width' => floatval($w),
+                        'height' => floatval($h)
+                    ]
+                ]
+            ]);
+
+        }
+
+        // $cropString = '{"default":{"cropArea":{"height":0.6570247933884298,"width":0.7851239669421488,"x":0,"y":0},"selectedRatio":"NaN","focusArea":null}}';
         if ($cropString === null && $image->hasProperty('crop') && $image->getProperty('crop')) {
             $cropString = $image->getProperty('crop');
         }
 
+        // {"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1}}}
         $cropVariantCollection = CropVariantCollection::create($cropString);
         $cropVariant = $_REQUEST['cropVariant'] ?: 'default';
         $cropArea = $cropVariantCollection->getCropArea($cropVariant);
