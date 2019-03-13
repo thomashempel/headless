@@ -2,6 +2,7 @@
 
 namespace Lfda\Headless\Controller;
 
+use Lfda\Headless\Provider\PagesProvider;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Service\FlexFormService;
@@ -14,9 +15,16 @@ class HeadlessController extends ActionController
 
     public function pagesAction()
     {
-        $r = intval($_REQUEST['r'] > 1) ? intval($_REQUEST['r']) : 1;
-        $result = $this->fetch_page_data(intval($GLOBALS['TSFE']->id), $r);
-        return json_encode($result);
+        $provider = $this->objectManager->get(PagesProvider::class);
+
+        $provider->setConfiguration($this->settings['tables']['pages']);
+
+        $provider->setArgument('recursive', max(1, intval($_REQUEST['r'] > 1)));
+        $provider->setArgument('root', intval($GLOBALS['TSFE']->id));
+
+        $pages = $provider->fetchData();
+
+        return json_encode($pages);
     }
 
     public function contentAction()
@@ -218,6 +226,7 @@ class HeadlessController extends ActionController
         if (array_key_exists('defaults', $this->settings['selection']['pages'])) {
             $selection = $this->settings['selection']['pages']['defaults'];
         }
+
         $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $pid, 0, $selection);
 
         $result = [];
