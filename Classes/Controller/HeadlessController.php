@@ -29,7 +29,14 @@ class HeadlessController extends ActionController
             $mapping = $this->settings['mapping']['pages'];
             $result = ['page' => $this->transform($page_data, $mapping, 'pages'), 'content' => []];
 
-            $statement = $this->fetch('tt_content', array_keys($this->settings['mapping']['tt_content']), $page_data['uid']);
+            $selection = [];
+            if (array_key_exists('defaults', $this->settings['selection']['tt_content'])) {
+                $selection = $this->settings['selection']['tt_content']['defaults'];
+            }
+
+            $statement = $this->fetch('tt_content',
+                array_keys($this->settings['mapping']['tt_content']),
+                $page_data['uid'], 0, $selection);
             $mapping = $this->settings['mapping']['tt_content'];
             if (!array_key_exists('uid', $mapping)) {
                 $mapping['uid'] = [ 'type' => 'int' ];
@@ -206,7 +213,12 @@ class HeadlessController extends ActionController
 
     protected function fetch_page_data($pid, $recursive = 1)
     {
-        $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $pid);
+
+        $selection = [];
+        if (array_key_exists('defaults', $this->settings['selection']['pages'])) {
+            $selection = $this->settings['selection']['pages']['defaults'];
+        }
+        $statement = $this->fetch('pages', array_keys($this->settings['mapping']['pages']), $pid, 0, $selection);
 
         $result = [];
         while ($row = $statement->fetch()) {
@@ -229,8 +241,18 @@ class HeadlessController extends ActionController
         return $result;
     }
 
-    protected function fetch($table, array $fields, $pid = -1, $uid = 0, $limit = 0, $includeHidden = false, $orderBy = 'sorting')
+    protected function fetch($table, array $fields, $pid = -1, $uid = 0, array $selection = [], $limit = 0, $orderBy = 'sorting')
     {
+
+        if ($pid >= 0) {
+            $selection['pid'] = ['value' => $pid, 'type' => \PDO::PARAM_INT];
+        }
+
+        if ($uid > 0) {
+            $selection['uid'] = ['value' => $pid, 'type' => \PDO::PARAM_INT];
+        }
+
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $query = $queryBuilder
             ->select(...$fields)
@@ -242,30 +264,14 @@ class HeadlessController extends ActionController
                 )
             );
 
-        if ($pid >= 0) {
+        foreach ($selection as $key => $conf) {
             $query->andWhere(
                 $queryBuilder->expr()->eq(
-                    'pid',
-                    $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)
+                    $key,
+                    $queryBuilder->createNamedParameter($conf['value'], $conf['type'])
                 )
             );
-        }
-        if ($uid > 0) {
-            $query->andWhere(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                )
-            );
-        }
 
-        if ($includeHidden === false) {
-            $query->andWhere(
-                $queryBuilder->expr()->eq(
-                    'hidden',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                )
-            );
         }
 
         $query->orderBy($orderBy);

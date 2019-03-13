@@ -22,6 +22,29 @@ plugin.tx_headless_api {
       }
     }
 
+    selection {
+      pages {
+        defaults {
+          sys_language_uid {
+            value = 0
+            type = 1
+          }
+          doktype {
+            value = 1
+            type = 1
+          }
+        }
+      }
+      tt_content {
+        defaults {
+          sys_language_uid {
+            value = 0
+            type = 1
+          }
+        }
+      }
+    }
+
     mapping {
 
       tx_news_domain_model_tag {
