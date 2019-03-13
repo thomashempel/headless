@@ -1,0 +1,83 @@
+plugin.tx_headless_api {
+  settings {
+    tables {
+      pages {
+
+        selection {
+          defaults {
+            sys_language_uid {
+              value = 0
+              type = int
+            }
+
+
+            doktype {
+              value = 1
+              type = int
+            }
+          }
+        }
+
+        mapping {
+          uid {
+            type = int
+          }
+
+          pid {
+            type = int
+            as = parent
+          }
+
+          hidden {
+            type = bool
+          }
+          crdate {
+            type = datetime
+          }
+          tstamp {
+            type = datetime
+            as = last_change
+          }
+          title {
+            type = string
+          }
+          slug {
+            type = string
+          }
+          starttime {
+            type = datetime
+          }
+          endtime {
+            type = datetime
+          }
+          fe_group {
+            type = int
+          }
+          sorting {
+            type = int
+          }
+          doktype {
+            type = int
+            mapStatic {
+              1 = page
+              254 = folder
+            }
+          }
+          subtitle {
+            type = string
+          }
+          media {
+            type = images
+            select = uid, title, description, alternative
+          }
+          nav_title {
+            type = string
+          }
+          nav_hide {
+            type = bool
+          }
+        }
+      }
+    }
+  }
+}

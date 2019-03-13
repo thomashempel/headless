@@ -1,0 +1,17 @@
+@import 'EXT:headless/Configuration/TypoScript/endpoints/base.typoscript'
+
+headless_image < headless_base
+headless_image {
+  typeNum = 2344
+
+  config.additionalHeaders.20 >
+
+  10 {
+    action = image
+    switchableControllerActions {
+      Headless {
+        1 = image
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@import 'EXT:headless/Configuration/TypoScript/endpoints/base.typoscript'
+
+headless_pages < headless_base
+headless_pages {
+  typeNum = 2342
+
+  10 {
+    action = pages
+    switchableControllerActions {
+      Headless {
+        1 = pages
+      }
+    }
+  }
+}

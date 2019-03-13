@@ -1,0 +1,15 @@
+@import 'EXT:headless/Configuration/TypoScript/endpoints/base.typoscript'
+
+headless_content < headless_base
+headless_content {
+  typeNum = 2343
+
+  10 {
+    action = content
+    switchableControllerActions {
+      Headless {
+        1 = content
+      }
+    }
+  }
+}

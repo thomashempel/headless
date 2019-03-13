@@ -1,0 +1,41 @@
+plugin.tx_headless_api {
+  settings {
+
+    records {
+
+      allowed {
+        newstag = tx_news_domain_model_tag
+        news = tx_news_domain_model_news
+      }
+
+      mapping {
+
+        tx_news_domain_model_tag {
+          uid {
+            type = int
+          }
+          title {
+            type = string
+          }
+        }
+
+        tx_news_domain_model_news {
+          uid {
+            type = int
+          }
+          title {
+            type = string
+          }
+          teaser {
+            type = string
+          }
+          bodytext {
+            type = string
+          }
+        }
+
+      }
+    }
+
+  }
+}

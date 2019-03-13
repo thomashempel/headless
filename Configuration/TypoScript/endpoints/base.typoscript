@@ -1,0 +1,29 @@
+headless_base = PAGE
+headless_base {
+
+  config {
+    disableAllHeaderCode = 1
+    disableBodyTag = true
+    debug = 0
+    no_cache = 1
+    additionalHeaders {
+      10 {
+        header = Access-Control-Allow-Origin: {$headless.header.allow-origin}
+        replace = 1
+      }
+      20 {
+        header = Content-Type: application/json
+        replace = 1
+      }
+    }
+  }
+
+  10 = USER
+  10 {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = Headless
+    pluginName = Api
+    vendorName = Lfda
+    controller = Headless
+  }
+}

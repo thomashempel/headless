@@ -1,0 +1,52 @@
+plugin.tx_headless_api {
+  settings {
+    tables {
+      tt_content {
+
+        selection {
+          defaults {
+            sys_language_uid {
+              value = 0
+              type = 1
+            }
+          }
+        }
+
+        mapping {
+          uid {
+            type = int
+          }
+          crdate {
+            type = datetime
+          }
+          header {
+            type = string
+          }
+          subheader {
+            type = string
+          }
+          bodytext {
+            type = string
+          }
+          image {
+            type = images
+            select = uid, title, description, alternative
+          }
+          CType {
+            type = string
+          }
+          list_type {
+            type = string
+          }
+          pi_flexform {
+            type = flexform
+            as = flexform
+          }
+          sorting {
+            type = int
+          }
+        }
+      }
+    }
+  }
+}
