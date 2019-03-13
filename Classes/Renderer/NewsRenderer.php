@@ -34,12 +34,12 @@ class NewsRenderer
         $news_repo = $objectManager->get(NewsRepository::class);
         $news_records = $news_repo->findDemanded($demand);
 
-        $res = [];
+        $result = [];
         foreach ($news_records as $record) {
-            $res[] = MappingService::transform($record, $options['mapping'], $options['table']);
+            $result[] = MappingService::transform($record, $options['mapping'], $options['table']);
         }
 
-        return $res;
+        return $result;
     }
 
 }

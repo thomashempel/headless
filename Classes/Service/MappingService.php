@@ -2,7 +2,7 @@
 
 namespace Lfda\Headless\Service;
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -14,12 +14,7 @@ class MappingService
         $result = [];
 
         foreach ($config as $fieldId => $fieldConfig) {
-            if (is_object($row)) {
-                $methodName = 'get' . ucfirst($fieldId);
-                $value = $row->$methodName();
-            } else {
-                $value = $row[$fieldId];
-            }
+            $value = MappingService::getProp($fieldId, $row);
 
             switch ($fieldConfig['type']) {
                 case 'int':
@@ -43,8 +38,13 @@ class MappingService
                     break;
 
                 case 'images':
-                    $fileRepository = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\FileRepository::class);
-                    $fileObjects = $fileRepository->findByRelation($table, $fieldId, $row['uid']);
+                    $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+
+                    $fileObjects = $fileRepository->findByRelation(
+                        $table,
+                        $fieldId,
+                        MappingService::getProp('uid', $row)
+                    );
 
                     $value = [];
                     foreach ($fileObjects as $file) {
@@ -59,7 +59,6 @@ class MappingService
                             $value[] = ['uid' => $file->getUId()];
                         }
                     }
-
                     break;
 
                 case 'flexform':
@@ -67,6 +66,15 @@ class MappingService
                     $value = $ffs->convertFlexFormContentToArray($value);
                     break;
 
+                case 'children':
+                    $children = [];
+                    foreach ($value as $item) {
+                        $children[] = MappingService::transform($item, $fieldConfig['mapping'], $fieldConfig['table']);
+                    }
+                    $value = $children;
+                    break;
+
+                case 'pass':
                 default:
                     break;
             }
@@ -85,6 +93,20 @@ class MappingService
         }
 
         return $result;
+    }
+
+    public static function getProp($name, $row)
+    {
+        if (is_object($row)) {
+            $methodName = 'get' . ucfirst($name);
+            if (method_exists($row, $methodName)) {
+                return $row->$methodName();
+            }
+        } else {
+            return $row[$name];
+        }
+
+        return NULL;
     }
 
 }

@@ -33,7 +33,6 @@ class ContentProvider extends BaseProvider
             // rendering
             foreach ($render_configs as $target_key => $config) {
                 if ($this->matches($config, $transformed)) {
-                    // $renderer = GeneralUtility::makeInstance($config['renderer']);
                     try {
                         $renderer = GeneralUtility::makeInstance($config['renderer']);
                         $transformed[$target_key] = $renderer->execute($transformed, $config['options']);

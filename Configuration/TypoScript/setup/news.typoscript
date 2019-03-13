@@ -24,8 +24,42 @@ plugin.tx_headless_api {
                 teaser {
                   type = string
                 }
+                author {
+                  type = string
+                }
+                datetime {
+                  type = pass
+                }
                 bodytext {
                   type = string
+                }
+                pathSegment {
+                  type = string
+                }
+                contentElements {
+                  type = children
+                  table = tt_content
+                  mapping {
+                    uid {
+                      type = int
+                    }
+                    header {
+                      type = string
+                    }
+                    subheader {
+                      type = string
+                    }
+                    bodytext {
+                      type = string
+                    }
+                    image {
+                      type = images
+                      select = uid, title, description, alternative
+                    }
+                    sorting {
+                      type = int
+                    }
+                  }
                 }
               }
             }

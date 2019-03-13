@@ -16,9 +16,6 @@ plugin.tx_headless_api {
           uid {
             type = int
           }
-          crdate {
-            type = datetime
-          }
           header {
             type = string
           }
