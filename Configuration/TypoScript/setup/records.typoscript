@@ -8,6 +8,15 @@ plugin.tx_headless_api {
         news = tx_news_domain_model_news
       }
 
+      selection {
+        tx_news_domain_model_news {
+          sys_language_uid {
+            value = 0
+            type = int
+          }
+        }
+      }
+
       mapping {
 
         tx_news_domain_model_tag {

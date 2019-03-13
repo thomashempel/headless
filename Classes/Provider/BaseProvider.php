@@ -32,25 +32,7 @@ class BaseProvider implements ProviderInterface
      */
     public function getConfiguration($key, $default = NULL)
     {
-        if (strpos($key, '/') !== false) {
-            $path = explode('/', $key);
-            $result = $this->configuration;
-            foreach ($path as $path_segment) {
-                if (array_key_exists($path_segment, $result)) {
-                    $result = $result[$path_segment];
-                } else {
-                    return $default;
-                }
-            }
-            return $result;
-
-        } else {
-            if (array_key_exists($key, $this->configuration)) {
-                return $this->configuration[$key];
-            }
-        }
-
-        return $default;
+        return $this->fetchFromArray($key, $this->configuration, $default);
     }
 
     /**
@@ -69,15 +51,34 @@ class BaseProvider implements ProviderInterface
      */
     public function getArgument($name, $default = NULL)
     {
-        if (array_key_exists($name, $this->arguments)) {
-            return $this->arguments[$name];
-        }
-        return $default;
+        return $this->fetchFromArray($name, $this->arguments, $default);
     }
 
     public function fetchData()
     {
         throw new \Exception('fetchData not implemented');
+    }
+
+    protected function fetchFromArray($key, $data, $default = NULL)
+    {
+        if (strpos($key, '/') !== false) {
+            $path = explode('/', $key);
+            $result = $data;
+            foreach ($path as $path_segment) {
+                if (array_key_exists($path_segment, $result)) {
+                    $result = $result[$path_segment];
+                } else {
+                    return $default;
+                }
+            }
+            return $result;
+
+        } else {
+            if (array_key_exists($key, $data)) {
+                return $data[$key];
+            }
+            return $default;
+        }
     }
 
     /**

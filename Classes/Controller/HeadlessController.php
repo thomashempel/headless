@@ -2,13 +2,15 @@
 
 namespace Lfda\Headless\Controller;
 
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Service\ImageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 use Lfda\Headless\Provider\ContentProvider;
 use Lfda\Headless\Provider\ImageProvider;
 use Lfda\Headless\Provider\PagesProvider;
+use Lfda\Headless\Provider\RecordsProvider;
 use Lfda\Headless\Service\MappingService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Service\ImageService;
 
 class HeadlessController extends ActionController
 {
@@ -41,28 +43,11 @@ class HeadlessController extends ActionController
 
     public function recordsAction()
     {
-        $tables = GeneralUtility::trimExplode(',', $_REQUEST['t']);
-        $records = [];
-
-        foreach ($tables as $shortname) {
-            if (array_key_exists($shortname, $this->settings['allowedRecords'])) {
-                $table = $this->settings['allowedRecords'][$shortname];
-                if (array_key_exists($table, $this->settings['mapping'])) {
-                    $statement = $this->fetch($table, array_keys($this->settings['mapping'][$table]), $GLOBALS['TSFE']->id);
-                    $result = [];
-
-                    while ($row = $statement->fetch()) {
-                        $mapping = $this->settings['mapping'][$table];
-                        if (!array_key_exists('uid', $mapping)) {
-                            $mapping['uid'] = [ 'type' => 'int' ];
-                        }
-                        $result[] = $this->transform($row, $mapping, $table);
-                    }
-
-                    $records[$shortname] = $result;
-                }
-            }
-        }
+        $records_provider = $this->objectManager->get(RecordsProvider::class);
+        $records_provider->setConfiguration($this->settings['records']);
+        $records_provider->setArgument('page', intval($GLOBALS['TSFE']->id));
+        $records_provider->setArgument('tables', GeneralUtility::trimExplode(',', $_REQUEST['t']));
+        $records = $records_provider->fetchData();
 
         return json_encode($records);
     }
