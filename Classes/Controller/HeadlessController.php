@@ -2,10 +2,10 @@
 
 namespace Lfda\Headless\Controller;
 
+use Lfda\Headless\Provider\ContentProvider;
 use Lfda\Headless\Provider\PagesProvider;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use Lfda\Headless\Service\MappingService;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Service\ImageService;
@@ -15,97 +15,28 @@ class HeadlessController extends ActionController
 
     public function pagesAction()
     {
-        $provider = $this->objectManager->get(PagesProvider::class);
+        $pages_provider = $this->objectManager->get(PagesProvider::class);
 
-        $provider->setConfiguration($this->settings['tables']['pages']);
-
-        $provider->setArgument('recursive', max(1, intval($_REQUEST['r'] > 1)));
-        $provider->setArgument('root', intval($GLOBALS['TSFE']->id));
-
-        $pages = $provider->fetchData();
+        $pages_provider->setConfiguration($this->settings['tables']['pages']);
+        $pages_provider->setArgument('recursive', max(1, intval($_REQUEST['r'] > 1)));
+        $pages_provider->setArgument('root', intval($GLOBALS['TSFE']->id));
+        $pages = $pages_provider->fetchData();
 
         return json_encode($pages);
     }
 
     public function contentAction()
     {
-        // $cacheIdentifier = sha1($GLOBALS['TSFE']->id);
-        // $cache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('headless_content');
+        $page_data = $this->configurationManager->getContentObject()->data;
+        $mapping = $this->settings['tables']['pages']['mapping'];
+        $result = ['page' => MappingService::transform($page_data, $mapping, 'pages')];
 
-        // if (($entry = $cache->get($cacheIdentifier)) === FALSE) {
-            $page_data = $this->configurationManager->getContentObject()->data;
-            $mapping = $this->settings['mapping']['pages'];
-            $result = ['page' => $this->transform($page_data, $mapping, 'pages'), 'content' => []];
+        $content_provider = $this->objectManager->get(ContentProvider::class);
+        $content_provider->setConfiguration($this->settings['tables']['tt_content']);
+        $content_provider->setArgument('page', intval($page_data['uid']));
+        $result['content'] = $content_provider->fetchData();
 
-            $selection = [];
-            if (array_key_exists('defaults', $this->settings['selection']['tt_content'])) {
-                $selection = $this->settings['selection']['tt_content']['defaults'];
-            }
-
-            $statement = $this->fetch('tt_content',
-                array_keys($this->settings['mapping']['tt_content']),
-                $page_data['uid'], 0, $selection);
-            $mapping = $this->settings['mapping']['tt_content'];
-            if (!array_key_exists('uid', $mapping)) {
-                $mapping['uid'] = [ 'type' => 'int' ];
-            }
-
-            $render_config = null;
-            if (array_key_exists('tt_content', $this->settings['rendering'])) {
-                $render_config = $this->settings['rendering']['tt_content'];
-            }
-
-            while ($row = $statement->fetch()) {
-                $transformed = $this->transform($row, $mapping, 'tt_content');
-
-                // rendering
-                if ($render_config) {
-                    foreach ($render_config as $target_key => $config) {
-                        if ($this->matches($config, $transformed)) {
-                            $renderer = GeneralUtility::makeInstance($config['renderer']);
-                            $transformed[$target_key] = $renderer->execute($transformed);
-
-                            // $newsController = GeneralUtility::makeInstance(NewsController::class);
-                            // $transformed[$target_key] = $newsController->getSettings();
-                            /*
-                            try {
-                                $renderer = new $config['renderer'];
-                                $transformed[$target_key] = $renderer->execute($transformed);
-                            } catch (Exception $exception) {
-                                $transformed[$target_key] = 'Can\'t find renderer!!!';
-                            }
-                            */
-                        } else {
-                            $transformed[$target_key] = false;
-                        }
-                    }
-                }
-
-                $result['content'][] = $transformed;
-            }
-
-            $entry = json_encode($result);
-            /*
-            $cache->set(
-                $cacheIdentifier,
-                $entry,
-                explode(',', $page_data['cache_tags']),
-                $page_data['cache_timeout'] > 0 ? $page_data['cache_timeout'] : 60
-            );
-
-        }
-        */
-        return $entry;
-    }
-
-    protected function matches($config, $row) {
-        foreach ($config['matching'] as $key => $value) {
-            if (!array_key_exists($key, $row) || $row[$key] != $value) {
-                return false;
-            }
-        }
-
-        return true;
+        return json_encode($result);
     }
 
     public function recordsAction()
@@ -219,6 +150,7 @@ class HeadlessController extends ActionController
         }
     }
 
+    /*
     protected function fetch_page_data($pid, $recursive = 1)
     {
 
@@ -378,4 +310,5 @@ class HeadlessController extends ActionController
 
         return $result;
     }
+    */
 }

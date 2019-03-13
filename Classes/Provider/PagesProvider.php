@@ -15,14 +15,27 @@ class PagesProvider extends BaseProvider
 
     public function fetchData()
     {
+        return $this->fetchSubPages($this->getConfiguration('root', 0));
+    }
+
+    public function fetchPageData($uid)
+    {
         $selection = SelectionService::prepare($this->getConfiguration('selection/defaults', []));
-        $selection['pid'] = SelectionService::make($this->getArgument('root', 0));
+        $selection['uid'] = SelectionService::make($uid);
+
+        return $this->fetch_page_data($selection);
+    }
+
+    public function fetchSubPages($pid)
+    {
+        $selection = SelectionService::prepare($this->getConfiguration('selection/defaults', []));
+        $selection['pid'] = SelectionService::make($pid);
         $iteration = $this->getArgument('recursive', 1);
 
         return $this->fetch_page_data($selection, $iteration);
     }
 
-    protected function fetch_page_data($selection, $iteration)
+    protected function fetch_page_data($selection, $iteration = 1)
     {
         $data = $this->fetch($this->table, array_keys($this->getConfiguration('mapping')), $selection);
         $mapping = $this->getConfiguration('mapping');
