@@ -1,19 +1,49 @@
 {
-    "name": "lfda/headless",
-    "description": "Attempt to make TYPO3 headless",
-    "license": ["GPL-2.0-or-later"],
-    "autoload": {
-        "psr-4": {
-            "Lfda\\Headless\\": "Classes/"
-        }
+  "name": "lfda/headless",
+  "type": "typo3-cms-extension",
+  "description": "Attempt to make TYPO3 headless",
+  "license": ["GPL-2.0-or-later"],
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Thomas Hempel",
+      "role": "Developer",
+      "email": "thomas.hempel@lfda.de"
+    }
+  ],
+  "require": {
+    "typo3/cms-core": "^9.5"
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "require-dev": {
+    "typo3/testing-framework": "^4.11.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lfda\\Headless\\": "Classes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Lfda\\Headless\\Tests\\": "Tests"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+    ]
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.x-dev"
     },
-    "type": "typo3-cms-extension",
-    "version": "0.1.0",
-    "authors": [
-        {
-            "name": "Thomas Hempel",
-            "email": "thomas.hempel@lfda.de"
-        }
-    ],
-    "minimum-stability": "dev"
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web",
+      "extension-key": "headless"
+    }
+  }
 }
