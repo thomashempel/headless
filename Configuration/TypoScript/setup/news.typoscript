@@ -1,0 +1,37 @@
+plugin.tx_headless_api {
+  settings {
+    tables {
+      tt_content {
+        rendering {
+          __news {
+
+            matching {
+              CType = list
+              list_type = news_pi1
+            }
+
+            renderer = Lfda\Headless\Renderer\NewsRenderer
+
+            options {
+              table = tx_news_domain_model_news
+              mapping {
+                uid {
+                  type = int
+                }
+                title {
+                  type = string
+                }
+                teaser {
+                  type = string
+                }
+                bodytext {
+                  type = string
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

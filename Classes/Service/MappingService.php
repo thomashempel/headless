@@ -9,12 +9,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class MappingService
 {
 
-    public static function transform(array $row, array $config, $table)
+    public static function transform($row, array $config, $table)
     {
         $result = [];
 
         foreach ($config as $fieldId => $fieldConfig) {
-            $value = $row[$fieldId];
+            if (is_object($row)) {
+                $methodName = 'get' . ucfirst($fieldId);
+                $value = $row->$methodName();
+            } else {
+                $value = $row[$fieldId];
+            }
 
             switch ($fieldConfig['type']) {
                 case 'int':
