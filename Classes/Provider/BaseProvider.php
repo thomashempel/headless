@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thomas
- * Date: 2019-03-13
- * Time: 09:26
- */
 
 namespace Lfda\Headless\Provider;
 
