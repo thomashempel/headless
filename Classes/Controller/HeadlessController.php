@@ -20,7 +20,7 @@ class HeadlessController extends ActionController
         $pages_provider = $this->objectManager->get(PagesProvider::class);
 
         $pages_provider->setConfiguration($this->settings['tables']['pages']);
-        $pages_provider->setArgument('recursive', max(1, intval($_REQUEST['r'] > 1)));
+        $pages_provider->setArgument('recursive', max(1, intval($_REQUEST['r'])));
         $pages_provider->setArgument('root', intval($GLOBALS['TSFE']->id));
         $pages = $pages_provider->fetchData();
 

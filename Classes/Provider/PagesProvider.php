@@ -15,7 +15,7 @@ class PagesProvider extends BaseProvider
 
     public function fetchData()
     {
-        return $this->fetchSubPages($this->getConfiguration('root', 0));
+        return $this->fetchSubPages($this->getArgument('root', 0));
     }
 
     public function fetchPageData($uid)
