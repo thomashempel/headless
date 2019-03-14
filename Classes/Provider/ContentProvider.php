@@ -22,6 +22,7 @@ class ContentProvider extends BaseProvider
         $contents = $this->fetch($this->table, array_keys($this->getConfiguration('mapping')), $selection);
         $mapping = $this->getConfiguration('mapping', []);
         $render_configs = $this->getConfiguration('rendering', []);
+        $group_by = $this->getConfiguration('group_by', false);
         $result = [];
 
         while ($row = $contents->fetch()) {
@@ -36,14 +37,19 @@ class ContentProvider extends BaseProvider
                     } catch (Exception $exception) {
                         $transformed[$target_key] = 'Can\'t find renderer!!!';
                     }
-
-                } else {
-                    $transformed[$target_key] = false;
                 }
             }
 
+            if ($group_by && array_key_exists($group_by, $transformed)) {
+                $key = $transformed[$group_by];
+                if (!isset($result[$key])) {
+                    $result[$key] = [];
+                }
+                $result[$key][] = $transformed;
+            } else {
+                $result[] = $transformed;
+            }
 
-            $result[] = $transformed;
         }
 
         return $result;

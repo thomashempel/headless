@@ -12,6 +12,8 @@ plugin.tx_headless_api {
           }
         }
 
+        group_by = section
+
         mapping {
           uid {
             type = int
@@ -42,6 +44,14 @@ plugin.tx_headless_api {
           }
           sorting {
             type = int
+          }
+          colpos {
+            type = int
+            mapStatic {
+              0 = main
+              10 = header
+            }
+            as = section
           }
         }
       }
