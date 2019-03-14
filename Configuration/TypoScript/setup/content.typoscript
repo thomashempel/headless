@@ -13,6 +13,7 @@ plugin.tx_headless_api {
         }
 
         group_by = section
+        order_by = sorting
 
         mapping {
           uid {

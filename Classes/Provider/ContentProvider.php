@@ -18,11 +18,13 @@ class ContentProvider extends BaseProvider
     {
         $selection = SelectionService::prepare($this->getConfiguration('selection/defaults', []));
         $selection['pid'] = SelectionService::make($this->getArgument('page', 0));
+        $order_by = $this->getConfiguration('order_by', 'sorting');
 
-        $contents = $this->fetch($this->table, array_keys($this->getConfiguration('mapping')), $selection);
+        $contents = $this->fetch($this->table, array_keys($this->getConfiguration('mapping')), $selection, $order_by);
         $mapping = $this->getConfiguration('mapping', []);
         $render_configs = $this->getConfiguration('rendering', []);
         $group_by = $this->getConfiguration('group_by', false);
+
         $result = [];
 
         while ($row = $contents->fetch()) {
