@@ -5,6 +5,7 @@ namespace Lfda\Headless\Service;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class MappingService
 {
@@ -82,6 +83,15 @@ class MappingService
             // Map value to static values
             if (isset($fieldConfig['mapStatic']) && isset($fieldConfig['mapStatic'][$value])) {
                 $value = $fieldConfig['mapStatic'][$value];
+            }
+
+            // Apply parseFunc to value if requested
+            if (isset($fieldConfig['parse']) && boolval($fieldConfig['parse']) === true) {
+                $parseFuncTSPath = $fieldConfig['parseFuncTSPath'] ?: 'lib.parseFunc_RTE';
+
+                $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+                $contentObject->start([]);
+                $value = $contentObject->parseFunc($value, [], '< ' . $parseFuncTSPath);
             }
 
             // If a name is set, return the value as the defined field

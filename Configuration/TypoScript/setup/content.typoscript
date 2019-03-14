@@ -24,6 +24,7 @@ plugin.tx_headless_api {
           }
           bodytext {
             type = string
+            parse = 1
           }
           image {
             type = images

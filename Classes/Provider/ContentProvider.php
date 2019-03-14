@@ -2,9 +2,6 @@
 
 namespace Lfda\Headless\Provider;
 
-
-use GeorgRinger\News\Domain\Model\News;
-use Lfda\Headless\Renderer\NewsRenderer;
 use Lfda\Headless\Service\MappingService;
 use Lfda\Headless\Service\SelectionService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
