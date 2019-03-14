@@ -23,7 +23,7 @@ call_user_func(
             [
                 'ctrl' => [
                     'typeicon_classes' => [
-                        $storageDoktype => 'apps-pagetree-storage',
+                        $storageDoktype => 'apps-pagetree-headless-storage',
                     ],
                 ],
             ]
