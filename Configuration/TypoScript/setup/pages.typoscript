@@ -68,7 +68,7 @@ plugin.tx_headless_api {
           }
           media {
             type = images
-            select = uid, title, description, alternative
+            properties = uid, title, description, alternative
           }
           nav_title {
             type = string

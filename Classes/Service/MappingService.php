@@ -40,7 +40,6 @@ class MappingService
 
                 case 'images':
                     $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
-
                     $fileObjects = $fileRepository->findByRelation(
                         $table,
                         $fieldId,
@@ -48,16 +47,19 @@ class MappingService
                     );
 
                     $value = [];
-                    foreach ($fileObjects as $file) {
-                        if (array_key_exists('select', $fieldConfig)) {
-                            $fields = GeneralUtility::trimExplode(',', $fieldConfig['select']);
-                            $img = [];
-                            foreach ($fields as $field) {
-                                $img[$field] = $file->getProperty($field);
+                    $properties = array_key_exists('properties', $fieldConfig) ? $fieldConfig['properties'] : false;
+                    if ($properties !== false) {
+                        foreach ($fileObjects as $file) {
+                            if ($properties) {
+                                $fields = GeneralUtility::trimExplode(',', $properties);
+                                $img = [];
+                                foreach ($fields as $field) {
+                                    $img[$field] = $file->getProperty($field);
+                                }
+                                $value[] = $img;
+                            } else {
+                                $value[] = ['uid' => $file->getUId()];
                             }
-                            $value[] = $img;
-                        } else {
-                            $value[] = ['uid' => $file->getUId()];
                         }
                     }
                     break;

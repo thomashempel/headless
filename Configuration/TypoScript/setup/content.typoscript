@@ -31,7 +31,7 @@ plugin.tx_headless_api {
           }
           image {
             type = images
-            select = uid, title, description, alternative
+            properties = uid, title, description, alternative
           }
           CType {
             type = string
