@@ -4,6 +4,7 @@ namespace Lfda\Headless\Provider;
 
 use Lfda\Headless\Service\MappingService;
 use Lfda\Headless\Service\SelectionService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PagesProvider extends BaseProvider
 {
@@ -57,6 +58,39 @@ class PagesProvider extends BaseProvider
         }
 
         return $pages;
+    }
+
+    public function getLanguageInformation($page_data)
+    {
+        $current_language = $GLOBALS['TYPO3_REQUEST']->getAttribute('language')->toArray();
+        $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
+        $configured_languages = $site->getLanguages();
+        $available = [];
+
+        foreach ($configured_languages as $configured_language) {
+            $data = $configured_language->toArray();
+
+            if ($data['languageId'] != $current_language['languageId']) {
+                $page = $this->fetch($this->table, ['uid'], [
+                    'sys_language_uid' => SelectionService::make($data['languageId']),
+                    'l10n_parent' => SelectionService::make($page_data['uid'])
+                ])->fetch();
+
+                if ($page !== false) {
+                    $available[] = $data;
+                }
+
+            } else {
+                $available[] = $data;
+            }
+        }
+
+        $information = [
+            'current' => $current_language,
+            'available' => $available
+        ];
+
+        return $information;
     }
 
 }

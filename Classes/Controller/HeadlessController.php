@@ -31,11 +31,20 @@ class HeadlessController extends ActionController
     {
         $page_data = $this->configurationManager->getContentObject()->data;
         $mapping = $this->settings['tables']['pages']['mapping'];
-        $result = ['page' => MappingService::transform($page_data, $mapping, 'pages')];
+        $mapped_page_record = MappingService::transform($page_data, $mapping, 'pages');
 
+        // inject some information about the page languages
+        $pages_provider = $this->objectManager->get(PagesProvider::class);
+        $mapped_page_record['__language_information'] = $pages_provider->getLanguageInformation($page_data);
+
+        $result = ['page' => $mapped_page_record];
         $content_provider = $this->objectManager->get(ContentProvider::class);
         $content_provider->setConfiguration($this->settings['tables']['tt_content']);
+        if ($page_data['_PAGES_OVERLAY'] === true) {
+            $content_provider->setArgument('language', intval($page_data['_PAGES_OVERLAY_LANGUAGE']));
+        }
         $content_provider->setArgument('page', intval($page_data['uid']));
+
         $result['content'] = $content_provider->fetchData();
 
         return json_encode($result);

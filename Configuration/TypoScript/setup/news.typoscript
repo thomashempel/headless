@@ -43,6 +43,7 @@ plugin.tx_headless_api {
                 }
                 contentElements {
                   type = children
+                  as = contents
                   table = tt_content
                   mapping {
                     uid {

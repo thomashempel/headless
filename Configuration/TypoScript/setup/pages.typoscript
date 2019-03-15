@@ -10,7 +10,6 @@ plugin.tx_headless_api {
               type = int
             }
 
-
             doktype {
               value = 1
               type = int
@@ -22,12 +21,10 @@ plugin.tx_headless_api {
           uid {
             type = int
           }
-
           pid {
             type = int
             as = parent
           }
-
           hidden {
             type = bool
           }
@@ -60,7 +57,7 @@ plugin.tx_headless_api {
             type = int
             mapStatic {
               1 = page
-              254 = folder
+              142 = storage
             }
           }
           subtitle {

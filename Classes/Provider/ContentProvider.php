@@ -18,6 +18,10 @@ class ContentProvider extends BaseProvider
     {
         $selection = SelectionService::prepare($this->getConfiguration('selection/defaults', []));
         $selection['pid'] = SelectionService::make($this->getArgument('page', 0));
+        $language = intval($this->getArgument('language', 0));
+        if ($language > 0) {
+            $selection['sys_language_uid'] = SelectionService::make($language);
+        }
         $order_by = $this->getConfiguration('order_by', 'sorting');
 
         $contents = $this->fetch($this->table, array_keys($this->getConfiguration('mapping')), $selection, $order_by);

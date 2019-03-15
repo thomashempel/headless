@@ -80,10 +80,9 @@ class BaseProvider implements ProviderInterface
      * @param array $fields
      * @param array $selection
      * @param null $orderBy
-     * @param int $limit
      * @return mixed
      */
-    protected function fetch($table, array $fields, array $selection, $orderBy = NULL, $limit = 0)
+    protected function fetch($table, array $fields, array $selection, $orderBy = NULL)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $query = $queryBuilder
@@ -101,10 +100,6 @@ class BaseProvider implements ProviderInterface
 
         if ($orderBy !== NULL) {
             $query->orderBy($orderBy);
-        }
-
-        if ($limit > 0) {
-            $query->setMaxResults($limit);
         }
 
         return $query->execute();
