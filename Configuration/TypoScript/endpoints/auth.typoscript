@@ -1,0 +1,15 @@
+@import 'EXT:headless/Configuration/TypoScript/endpoints/base.typoscript'
+
+headless_auth < headless_base
+headless_auth {
+  typeNum = 23007
+
+  10 {
+    action = records
+    switchableControllerActions {
+      Auth {
+        1 = index
+      }
+    }
+  }
+}

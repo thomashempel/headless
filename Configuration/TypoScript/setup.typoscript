@@ -1,4 +1,5 @@
 # Include endpoints
+@import 'EXT:headless/Configuration/TypoScript/endpoints/auth.typoscript'
 @import 'EXT:headless/Configuration/TypoScript/endpoints/pages.typoscript'
 @import 'EXT:headless/Configuration/TypoScript/endpoints/content.typoscript'
 @import 'EXT:headless/Configuration/TypoScript/endpoints/records.typoscript'
@@ -9,3 +10,4 @@
 @import 'EXT:headless/Configuration/TypoScript/setup/content.typoscript'
 @import 'EXT:headless/Configuration/TypoScript/setup/news.typoscript'
 @import 'EXT:headless/Configuration/TypoScript/setup/records.typoscript'
+@import 'EXT:headless/Configuration/TypoScript/setup/auth.typoscript'

@@ -5,14 +5,22 @@ headless_base {
     disableAllHeaderCode = 1
     disableBodyTag = true
     debug = 0
-    no_cache = 1
+    no_cache = 0
     additionalHeaders {
       10 {
         header = Access-Control-Allow-Origin: {$headless.header.allow-origin}
         replace = 1
       }
       20 {
-        header = Content-Type: application/json
+        header = Access-Control-Allow-Methods: GET,POST,OPTIONS
+        replace = 1
+      }
+      30 {
+        header = Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
+        replace = 1
+      }
+      100 {
+        # header = Content-Type: application/json
         replace = 1
       }
     }
