@@ -1,4 +1,16 @@
 .Build/
-.idea/
-Build/testing-docker/.env
+
+*~
+*.bak
+*.idea
+*.project
+*.swp
+.project
+.webprj
+nbproject
+
 composer.lock
+
+# ignore generated documentation
+*GENERATED*
+

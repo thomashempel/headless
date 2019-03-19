@@ -1,58 +1,65 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
 .. include:: Includes.txt
 
+
+.. Every manual should have a start label for cross-referencing to
+.. start page. Do not remove this!
 
 .. _start:
 
 =============================================================
-News system
+Monkeyhead
 =============================================================
 
 .. only:: html
 
-	:Classification:
-		monkeyhead
+   :Classification:
+      <monkeyhead>
 
-	:Version:
-		|release|
+   :Version:
+      |release|
 
-	:Language:
-		en
+   :Language:
+      en
 
-	:Keywords:
-		monkeyhead
+   :Description:
+      Manual covering TYPO3 extension monkeyhead
 
-	:Copyright:
-		2019
+   :Keywords:
+      headless,decoupled,json,API
 
-	:Author:
-		Thomas Hempel
+   :Copyright:
+      2019
 
-	:License:
-		This document is published under the Open Content License
-		available from http://www.opencontent.org/opl.shtml
+   :Author:
+      Thomas Hempel
 
-	:Rendered:
-		|today|
+   :Email:
+      thomas.hempel@lfda.de
 
-	The content of this document is related to TYPO3,
-	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+   :License:
+      This document is published under the Open Publication License
+      available from http://www.opencontent.org/openpub/
+
+   :Rendered:
+      |today|
+
+   The content of this document is related to TYPO3,
+   a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
 
 
-	**Table of Contents**
+   **Table of Contents**
 
 .. toctree::
-	:maxdepth: 3
-	:titlesonly:
-	:glob:
+   :maxdepth: 3
 
-	Introduction/Index
-	UsersManual/Index
-	AdministratorManual/Index
-	DeveloperManual/Index
-	Tutorials/Index
-	Misc/Index
+
+   Introduction/Index
+   User/Index
+   Installation/Index
+   Configuration/Index
+   Developer/Index
+   KnownProblems/Index
+   ToDoList/Index
+   ChangeLog/Index
+   Support/Index
+   Links
