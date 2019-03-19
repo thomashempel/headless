@@ -1,6 +1,6 @@
 <?php
 
-namespace Lfda\Headless\Provider;
+namespace Lfda\Monkeyhead\Provider;
 
 
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;

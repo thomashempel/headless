@@ -1,7 +1,7 @@
-@import 'EXT:headless/Configuration/TypoScript/endpoints/base.typoscript'
+@import 'EXT:monkeyhead/Configuration/TypoScript/endpoints/base.typoscript'
 
-headless_image < headless_base
-headless_image {
+monkeyhead_image < monkeyhead_base
+monkeyhead_image {
   typeNum = 2344
 
   config.additionalHeaders.20 >
@@ -9,7 +9,7 @@ headless_image {
   10 {
     action = image
     switchableControllerActions {
-      Headless {
+      Monkeyhead {
         1 = image
       }
     }

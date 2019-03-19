@@ -1,13 +1,13 @@
-@import 'EXT:headless/Configuration/TypoScript/endpoints/base.typoscript'
+@import 'EXT:monkeyhead/Configuration/TypoScript/endpoints/base.typoscript'
 
-headless_pages < headless_base
-headless_pages {
+monkeyhead_pages < monkeyhead_base
+monkeyhead_pages {
   typeNum = 2342
 
   10 {
     action = pages
     switchableControllerActions {
-      Headless {
+      Monkeyhead {
         1 = pages
       }
     }

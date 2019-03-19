@@ -23,12 +23,12 @@ call_user_func(
             [
                 'ctrl' => [
                     'typeicon_classes' => [
-                        $storageDoktype => 'apps-pagetree-headless-storage',
+                        $storageDoktype => 'apps-pagetree-monkeyhead-storage',
                     ],
                 ],
             ]
         );
     },
-    'headless',
+    'monkeyhead',
     'pages'
 );

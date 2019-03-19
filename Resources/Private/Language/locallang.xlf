@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-    <file source-language="en" datatype="plaintext" original="messages" product_name="headless">
+    <file source-language="en" datatype="plaintext" original="messages" product_name="monkeyhead">
         <header/>
         <body>
             <trans-unit id="storage_page_type">

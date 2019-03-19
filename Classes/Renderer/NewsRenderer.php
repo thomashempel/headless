@@ -1,10 +1,10 @@
 <?php
 
-namespace Lfda\Headless\Renderer;
+namespace Lfda\Monkeyhead\Renderer;
 
 use GeorgRinger\News\Controller\NewsController;
 use GeorgRinger\News\Domain\Repository\NewsRepository;
-use Lfda\Headless\Service\MappingService;
+use Lfda\Monkeyhead\Service\MappingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -28,7 +28,7 @@ class NewsRenderer
 
         $settings = array_merge_recursive($news_settings_ts, $news_settings_ff['settings']);
 
-        $news_controller = GeneralUtility::makeInstance(HeadlessNewsController::class);
+        $news_controller = GeneralUtility::makeInstance(MonkeyheadNewsController::class);
         $demand = $news_controller->getDemand($settings);
 
         $news_repo = $objectManager->get(NewsRepository::class);
@@ -44,7 +44,7 @@ class NewsRenderer
 
 }
 
-class HeadlessNewsController extends NewsController
+class MonkeyheadNewsController extends NewsController
 {
     public function __construct()
     {

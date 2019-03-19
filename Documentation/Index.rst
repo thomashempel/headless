@@ -15,7 +15,7 @@ News system
 .. only:: html
 
 	:Classification:
-		headless
+		monkeyhead
 
 	:Version:
 		|release|
@@ -24,7 +24,7 @@ News system
 		en
 
 	:Keywords:
-		headless
+		monkeyhead
 
 	:Copyright:
 		2019

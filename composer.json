@@ -1,5 +1,5 @@
 {
-  "name": "lfda/headless",
+  "name": "lfda/monkeyhead",
   "type": "typo3-cms-extension",
   "description": "Read Only TYPO3 JSON frontend",
   "license": ["GPL-2.0-or-later"],
@@ -23,12 +23,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Lfda\\Headless\\": "Classes/"
+      "Lfda\\Monkeyhead\\": "Classes/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Lfda\\Headless\\Tests\\": "Tests"
+      "Lfda\\Monkeyhead\\Tests\\": "Tests"
     }
   },
   "scripts": {
@@ -43,7 +43,7 @@
     "typo3/cms": {
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/Web",
-      "extension-key": "headless"
+      "extension-key": "monkeyhead"
     }
   }
 }

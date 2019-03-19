@@ -1,18 +1,18 @@
 <?php
 
-namespace Lfda\Headless\Controller;
+namespace Lfda\Monkeyhead\Controller;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Lfda\Headless\Provider\ContentProvider;
-use Lfda\Headless\Provider\ImageProvider;
-use Lfda\Headless\Provider\PagesProvider;
-use Lfda\Headless\Provider\RecordsProvider;
-use Lfda\Headless\Service\MappingService;
+use Lfda\Monkeyhead\Provider\ContentProvider;
+use Lfda\Monkeyhead\Provider\ImageProvider;
+use Lfda\Monkeyhead\Provider\PagesProvider;
+use Lfda\Monkeyhead\Provider\RecordsProvider;
+use Lfda\Monkeyhead\Service\MappingService;
 
-class HeadlessController extends ActionController
+class MonkeyheadController extends ActionController
 {
 
     public function pagesAction()

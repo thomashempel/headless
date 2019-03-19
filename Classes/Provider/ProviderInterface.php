@@ -1,5 +1,5 @@
 <?php
-namespace Lfda\Headless\Provider;
+namespace Lfda\Monkeyhead\Provider;
 
 interface ProviderInterface
 {

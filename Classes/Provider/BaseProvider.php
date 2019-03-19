@@ -1,6 +1,6 @@
 <?php
 
-namespace Lfda\Headless\Provider;
+namespace Lfda\Monkeyhead\Provider;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

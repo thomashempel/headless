@@ -1,6 +1,6 @@
 <?php
 
-namespace Lfda\Headless\Tests\Unit;
+namespace Lfda\Monkeyhead\Tests\Unit;
 
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 

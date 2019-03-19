@@ -1,4 +1,4 @@
-plugin.tx_headless_api {
+plugin.tx_monkeyhead_api {
   settings {
     auth {
       mapping {

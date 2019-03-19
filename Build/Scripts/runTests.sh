@@ -32,7 +32,7 @@ setUpDockerComposeDotEnv() {
 
 # Load help text into $HELP
 read -r -d '' HELP <<EOF
-headless test runner. Execute unit test suite and some other details.
+Monkeyhead test runner. Execute unit test suite and some other details.
 Also used by travis-ci for test execution.
 
 Successfully tested with docker version 18.06.1-ce and docker-compose 1.21.2.
@@ -173,11 +173,11 @@ DOCKER_PHP_IMAGE=`echo "php${PHP_VERSION}" | sed -e 's/\.//'`
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
 if [ -n "${1}" ]; then
-    TEST_FILE="Web/typo3conf/ext/headless/${1}"
+    TEST_FILE="Web/typo3conf/ext/monkeyhead/${1}"
 else
     case ${TEST_SUITE} in
         unit)
-            TEST_FILE="Web/typo3conf/ext/headless/Tests/Unit"
+            TEST_FILE="Web/typo3conf/ext/monkeyhead/Tests/Unit"
             ;;
     esac
 fi

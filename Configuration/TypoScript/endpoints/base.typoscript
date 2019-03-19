@@ -1,5 +1,5 @@
-headless_base = PAGE
-headless_base {
+monkeyhead_base = PAGE
+monkeyhead_base {
 
   config {
     disableAllHeaderCode = 1
@@ -8,7 +8,7 @@ headless_base {
     no_cache = 0
     additionalHeaders {
       10 {
-        header = Access-Control-Allow-Origin: {$headless.header.allow-origin}
+        header = Access-Control-Allow-Origin: {$monkeyhead.header.allow-origin}
         replace = 1
       }
       20 {
@@ -29,9 +29,9 @@ headless_base {
   10 = USER
   10 {
     userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-    extensionName = Headless
+    extensionName = Monkeyhead
     pluginName = Api
     vendorName = Lfda
-    controller = Headless
+    controller = Monkeyhead
   }
 }

@@ -1,7 +1,7 @@
-@import 'EXT:headless/Configuration/TypoScript/endpoints/base.typoscript'
+@import 'EXT:monkeyhead/Configuration/TypoScript/endpoints/base.typoscript'
 
-headless_auth < headless_base
-headless_auth {
+monkeyhead_auth < monkeyhead_base
+monkeyhead_auth {
   typeNum = 23007
 
   10 {

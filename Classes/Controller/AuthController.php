@@ -1,8 +1,8 @@
 <?php
 
-namespace Lfda\Headless\Controller;
+namespace Lfda\Monkeyhead\Controller;
 
-use Lfda\Headless\Service\MappingService;
+use Lfda\Monkeyhead\Service\MappingService;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

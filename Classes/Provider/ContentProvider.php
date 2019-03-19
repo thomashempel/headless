@@ -1,9 +1,9 @@
 <?php
 
-namespace Lfda\Headless\Provider;
+namespace Lfda\Monkeyhead\Provider;
 
-use Lfda\Headless\Service\MappingService;
-use Lfda\Headless\Service\SelectionService;
+use Lfda\Monkeyhead\Service\MappingService;
+use Lfda\Monkeyhead\Service\SelectionService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ContentProvider extends BaseProvider

@@ -1,6 +1,6 @@
-headless {
+monkeyhead {
   header {
-    # cat=headless/header; type=string; label=Allowed origins
+    # cat=monkeyhead/header; type=string; label=Allowed origins
     allow-origin = *
   }
 }

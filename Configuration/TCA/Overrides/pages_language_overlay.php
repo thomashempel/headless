@@ -17,6 +17,6 @@ call_user_func(
             'after'
         );
     },
-    'headless',
+    'monkeyhead',
     'pages_language_overlay'
 );

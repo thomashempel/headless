@@ -1,7 +1,7 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = array(
-    'title' => 'Lfda Headless',
+    'title' => 'Lfda Monkeyhead',
     'description' => 'Read Only TYPO3 JSON frontend',
     'category' => 'fe',
     'shy' => 0,

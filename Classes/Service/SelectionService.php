@@ -1,6 +1,6 @@
 <?php
 
-namespace Lfda\Headless\Service;
+namespace Lfda\Monkeyhead\Service;
 
 
 class SelectionService
