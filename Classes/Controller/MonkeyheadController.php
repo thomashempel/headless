@@ -20,6 +20,7 @@ class MonkeyheadController extends ActionController
         if (!array_key_exists('security', $this->settings)) {
             return ['allowed' => true];
         }
+
         $require_secret = boolval($this->settings['security']['require-secret']);
         $secret = $this->settings['security']['secret'];
 
@@ -42,18 +43,14 @@ class MonkeyheadController extends ActionController
         return ['allowed' => false, 'Secret mismatch'];
     }
 
-    public function initializeAction()
+    public function pagesAction()
     {
         $access = $this->checkAccess();
         if ($access['allowed'] === false) {
             $this->response->setStatus(403);
-            $this->response->setContent(json_encode($access));
-            $this->response->shutdown();
+            return json_encode($access);
         }
-    }
 
-    public function pagesAction()
-    {
         $pages_provider = $this->objectManager->get(PagesProvider::class);
 
         $pages_provider->setConfiguration($this->settings['tables']['pages']);
@@ -66,6 +63,13 @@ class MonkeyheadController extends ActionController
 
     public function contentAction()
     {
+        $access = $this->checkAccess();
+
+        if ($access['allowed'] === false) {
+            $this->response->setStatus(403);
+            return json_encode($access);
+        }
+
         $page_data = $this->configurationManager->getContentObject()->data;
         $mapping = $this->settings['tables']['pages']['mapping'];
         $mapped_page_record = MappingService::transform($page_data, $mapping, 'pages');
@@ -89,6 +93,12 @@ class MonkeyheadController extends ActionController
 
     public function recordsAction()
     {
+        $access = $this->checkAccess();
+        if ($access['allowed'] === false) {
+            $this->response->setStatus(403);
+            return json_encode($access);
+        }
+
         $records_provider = $this->objectManager->get(RecordsProvider::class);
         $records_provider->setConfiguration($this->settings['records']);
         $records_provider->setArgument('page', intval($GLOBALS['TSFE']->id));
@@ -100,6 +110,12 @@ class MonkeyheadController extends ActionController
 
     public function imageAction()
     {
+        $access = $this->checkAccess();
+        if ($access['allowed'] === false) {
+            $this->response->setStatus(403);
+            return json_encode($access);
+        }
+
         $image_provider = $this->objectManager->get(ImageProvider::class);
 
         $image_provider->setArgument('uid', intval($_REQUEST['uid']));
