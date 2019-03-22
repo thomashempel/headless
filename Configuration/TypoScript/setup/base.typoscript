@@ -1,0 +1,8 @@
+plugin.tx_monkeyhead_api {
+  settings {
+    security {
+       require-secret = {$monkeyhead.security.require-secret}
+       secret = {$monkeyhead.security.secret}
+    }
+  }
+}

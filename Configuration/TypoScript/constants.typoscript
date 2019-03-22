@@ -1,6 +1,14 @@
 monkeyhead {
   header {
-    # cat=monkeyhead/header; type=string; label=Allowed origins
+    #cat=monkeyhead/header; type=string; label=Allowed origins
     allow-origin = *
+  }
+
+  security {
+    #cat=monkeyhead/security; type=boolean; label=The frontend requires a secret
+    require-secret = 0
+
+    #cat=monkeyhead/security; type=string; label=Secret
+    secret =
   }
 }

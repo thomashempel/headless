@@ -15,6 +15,43 @@ use Lfda\Monkeyhead\Service\MappingService;
 class MonkeyheadController extends ActionController
 {
 
+    protected function checkAccess()
+    {
+        if (!array_key_exists('security', $this->settings)) {
+            return ['allowed' => true];
+        }
+        $require_secret = boolval($this->settings['security']['require-secret']);
+        $secret = $this->settings['security']['secret'];
+
+        if (!$require_secret) {
+            return ['allowed' => true];
+        }
+        if (empty($secret)) {
+            return ['allowed' => false, 'msg' => 'Empty secret'];
+        }
+
+        $headers = getallheaders();
+        if (!array_key_exists('X-Secret', $headers)) {
+            return ['allowed' => false, 'Header missing'];
+        }
+
+        if ($headers['X-Secret'] == $secret) {
+            return ['allowed' => true];
+        }
+
+        return ['allowed' => false, 'Secret mismatch'];
+    }
+
+    public function initializeAction()
+    {
+        $access = $this->checkAccess();
+        if ($access['allowed'] === false) {
+            $this->response->setStatus(403);
+            $this->response->setContent(json_encode($access));
+            $this->response->shutdown();
+        }
+    }
+
     public function pagesAction()
     {
         $pages_provider = $this->objectManager->get(PagesProvider::class);
