@@ -1,5 +1,4 @@
 # Include endpoints
-@import 'EXT:monkeyhead/Configuration/TypoScript/endpoints/auth.typoscript'
 @import 'EXT:monkeyhead/Configuration/TypoScript/endpoints/pages.typoscript'
 @import 'EXT:monkeyhead/Configuration/TypoScript/endpoints/content.typoscript'
 @import 'EXT:monkeyhead/Configuration/TypoScript/endpoints/records.typoscript'
@@ -10,4 +9,3 @@
 @import 'EXT:monkeyhead/Configuration/TypoScript/setup/content.typoscript'
 @import 'EXT:monkeyhead/Configuration/TypoScript/setup/news.typoscript'
 @import 'EXT:monkeyhead/Configuration/TypoScript/setup/records.typoscript'
-@import 'EXT:monkeyhead/Configuration/TypoScript/setup/auth.typoscript'

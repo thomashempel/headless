@@ -8,11 +8,7 @@ call_user_func(
             'Lfda.Monkeyhead',
             'Api',
             [
-                'Auth' => 'index',
                 'Monkeyhead' => 'pages, content, records, image'
-            ],
-            [
-                'Auth' => 'index'
             ]
         );
     }
