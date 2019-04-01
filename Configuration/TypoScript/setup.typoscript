@@ -6,7 +6,7 @@
 
 # Include data configuration
 @import 'EXT:monkeyhead/Configuration/TypoScript/setup/base.typoscript'
-@import 'EXT:monkeyhead/Configuration/TypoScript/setup/pages.typoscript'
-@import 'EXT:monkeyhead/Configuration/TypoScript/setup/content.typoscript'
-@import 'EXT:monkeyhead/Configuration/TypoScript/setup/news.typoscript'
-@import 'EXT:monkeyhead/Configuration/TypoScript/setup/records.typoscript'
+#@import 'EXT:monkeyhead/Configuration/TypoScript/setup/pages.typoscript'
+#@import 'EXT:monkeyhead/Configuration/TypoScript/setup/content.typoscript'
+#@import 'EXT:monkeyhead/Configuration/TypoScript/setup/news.typoscript'
+#@import 'EXT:monkeyhead/Configuration/TypoScript/setup/records.typoscript'

@@ -3,6 +3,10 @@ plugin.tx_monkeyhead_api {
     tables {
       pages {
 
+        options {
+          includeLanguageInformation = 1
+        }
+
         selection {
           defaults {
             sys_language_uid {

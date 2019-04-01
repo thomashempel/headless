@@ -42,6 +42,7 @@ plugin.tx_monkeyhead_api {
           pi_flexform {
             type = flexform
             as = flexform
+            omit = 1
           }
           sorting {
             type = int
