@@ -75,8 +75,10 @@ class MonkeyheadController extends ActionController
         $mapped_page_record = MappingService::transform($page_data, $mapping, 'pages');
 
         // inject some information about the page languages
-        $pages_provider = $this->objectManager->get(PagesProvider::class);
-        $mapped_page_record['__language_information'] = $pages_provider->getLanguageInformation($page_data);
+        if (intval($this->settings['tables']['pages']['options']['includeLanguageInformation']) === 1) {
+            $pages_provider = $this->objectManager->get(PagesProvider::class);
+            $mapped_page_record['__language_information'] = $pages_provider->getLanguageInformation($page_data);
+        }
 
         $result = ['page' => $mapped_page_record];
         $content_provider = $this->objectManager->get(ContentProvider::class);
