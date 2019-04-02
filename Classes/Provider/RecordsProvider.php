@@ -12,6 +12,7 @@ class RecordsProvider extends BaseProvider
     {
         $allowed = $this->getConfiguration('allowed', []);
         $requested_tables = $this->getArgument('tables', []);
+        $requested_id = $this->getArgument('id', 0);
         $records = [];
 
         foreach ($requested_tables as $shortname) {
@@ -21,6 +22,10 @@ class RecordsProvider extends BaseProvider
                 if ($mapping !== false) {
                     $selection = SelectionService::prepare($this->getConfiguration('selection/' . $table_name, []));
                     $selection['pid'] = SelectionService::make($this->getArgument('page', 0));
+                    if ($requested_id > 0) {
+                        $selection['uid'] = SelectionService::make($requested_id);
+                    }
+
                     $statement = $this->fetch($table_name, array_keys($mapping), $selection);
 
                     $result = [];

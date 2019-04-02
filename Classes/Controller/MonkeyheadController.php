@@ -101,10 +101,15 @@ class MonkeyheadController extends ActionController
             return json_encode($access);
         }
 
+        if (!isset($this->settings['records'])) {
+            return json_encode(['No records configuration found']);
+        }
+
         $records_provider = $this->objectManager->get(RecordsProvider::class);
         $records_provider->setConfiguration($this->settings['records']);
         $records_provider->setArgument('page', intval($GLOBALS['TSFE']->id));
         $records_provider->setArgument('tables', GeneralUtility::trimExplode(',', $_REQUEST['t']));
+        $records_provider->setArgument('id', intval($_REQUEST['id']));
         $records = $records_provider->fetchData();
 
         return json_encode($records);
