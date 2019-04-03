@@ -5,6 +5,7 @@ plugin.tx_monkeyhead_api {
 
         options {
           includeLanguageInformation = 1
+          order_by = sorting
         }
 
         selection {

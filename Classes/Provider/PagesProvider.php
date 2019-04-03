@@ -38,7 +38,12 @@ class PagesProvider extends BaseProvider
 
     protected function fetch_page_data($selection, $iteration = 1)
     {
-        $data = $this->fetch($this->table, array_keys($this->getConfiguration('mapping')), $selection);
+        $data = $this->fetch(
+            $this->table,
+            array_keys($this->getConfiguration('mapping')),
+            $selection,
+            $this->getConfiguration('options/order_by')
+        );
         $mapping = $this->getConfiguration('mapping');
 
         $pages = [];

@@ -22,12 +22,12 @@ class ContentProvider extends BaseProvider
         if ($language > 0) {
             $selection['sys_language_uid'] = SelectionService::make($language);
         }
-        $order_by = $this->getConfiguration('order_by', 'sorting');
+        $order_by = $this->getConfiguration('options/order_by', 'sorting');
 
         $contents = $this->fetch($this->table, array_keys($this->getConfiguration('mapping')), $selection, $order_by);
         $mapping = $this->getConfiguration('mapping', []);
         $render_configs = $this->getConfiguration('rendering', []);
-        $group_by = $this->getConfiguration('group_by', false);
+        $group_by = $this->getConfiguration('options/group_by', false);
 
         $result = [];
 

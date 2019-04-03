@@ -12,8 +12,10 @@ plugin.tx_monkeyhead_api {
           }
         }
 
-        group_by = section
-        order_by = sorting
+        options {
+          group_by = section
+          order_by = sorting
+        }
 
         mapping {
           uid {
