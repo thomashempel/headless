@@ -90,12 +90,25 @@ class BaseProvider implements ProviderInterface
             ->from($table);
 
         foreach ($selection as $key => $conf) {
-            $query->andWhere(
-                $queryBuilder->expr()->eq(
-                    $key,
-                    $queryBuilder->createNamedParameter($conf['value'], $conf['type'])
-                )
-            );
+            switch ($conf['method']) {
+                case 'in':
+                    $query->andWhere(
+                        $queryBuilder->expr()->in(
+                            $key,
+                            $conf['value']
+                        )
+                    );
+                    break;
+                case 'eq':
+                default:
+                    $query->andWhere(
+                        $queryBuilder->expr()->eq(
+                            $key,
+                            $queryBuilder->createNamedParameter($conf['value'], $conf['type'])
+                        )
+                    );
+            }
+
         }
 
         if ($orderBy !== NULL) {

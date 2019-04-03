@@ -3,6 +3,8 @@
 namespace Lfda\Monkeyhead\Service;
 
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class SelectionService
 {
 
@@ -10,24 +12,27 @@ class SelectionService
     {
         $res = [];
         foreach ($configuration as $key => $config) {
-            $res[$key] = SelectionService::make($config['value'], $config['type']);
+            $res[$key] = SelectionService::make($config['value'], $config['type'], $config['method'] ?: 'eq');
         }
 
         return $res;
     }
 
-    public static function make($value, $type = 'int')
+    public static function make($value, $type = 'int', $method = 'eq')
     {
+
         switch ($type) {
             case 'string':
-                return ['value' => $value, 'type' => \PDO::PARAM_STR];
+                $value = ($method == 'in') ? GeneralUtility::trimExplode(',', $value) : $value;
+                return ['value' => $value, 'type' => \PDO::PARAM_STR, 'method' => $method];
 
             case 'bool':
-                return ['value' => boolval($value), 'type' => \PDO::PARAM_BOOL];
+                return ['value' => boolval($value), 'type' => \PDO::PARAM_BOOL, 'method' => $method];
 
             case 'int':
             default:
-                return ['value' => intval($value), 'type' => \PDO::PARAM_INT];
+                $value = ($method == 'in') ? GeneralUtility::intExplode(',', $value) : intval($value);
+                return ['value' => $value, 'type' => \PDO::PARAM_INT, 'method' => $method];
         }
     }
 
