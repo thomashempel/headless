@@ -19,6 +19,9 @@ class NewsProvider extends BaseProvider
         $repository = $obj_manager->get(NewsRepository::class);
 
         $uid = $this->getArgument('uid', 0);
+        $lookup_value = $this->getArgument('lookup_value');
+        $lookup_property = $this->getArgument('lookup_property');
+
         if ($uid > 0) {
             return [$repository->findByUid($uid)];
 
@@ -27,7 +30,13 @@ class NewsProvider extends BaseProvider
             $querySettings = $obj_manager->get(Typo3QuerySettings::class);
             $querySettings->setStoragePageIds([$GLOBALS['TSFE']->id]);
             $repository->setDefaultQuerySettings($querySettings);
-            return $repository->findAll();
+
+            if (isset($lookup_property) && isset($lookup_value)) {
+                $methodName = 'findBy' . ucfirst($lookup_property);
+                return $repository->$methodName($lookup_value);
+            } else {
+                return $repository->findAll();
+            }
         }
     }
 
