@@ -33,12 +33,19 @@ class RecordsProvider extends BaseProvider
 
             $mapped_result = [];
 
-            $provider_class = $this->getConfiguration('adaptors/' . $table_name . '/provider');
+            /** @var BaseProvider $provider_class */
+            $provider_setup = $this->getConfiguration('adaptors/' . $table_name . '/provider');
+            $provider_options = [];
+            if (isset($provider_setup['_typoScriptNodeValue'])) {
+                $provider_class = $provider_setup['_typoScriptNodeValue'];
+                $provider_options = $provider_setup['options'];
+            } else {
+                $provider_class = $provider_setup;
+            }
 
             if ($provider_class && $provider = GeneralUtility::makeInstance($provider_class)) {
-                if ($requested_id > 0) {
-                    $provider->setArgument('uid', $requested_id);
-                }
+                $provider->setArgument('lookup_property', $provider_options['lookup_property']);
+                $provider->setArgument('lookup_value', $this->getArgument($provider_options['lookup_argument']));
                 $provided_result = $provider->fetchData();
 
             } else {

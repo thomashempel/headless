@@ -45,27 +45,7 @@ plugin.tx_monkeyhead_api {
                   type = children
                   as = contents
                   table = tt_content
-                  mapping {
-                    uid {
-                      type = int
-                    }
-                    header {
-                      type = string
-                    }
-                    subheader {
-                      type = string
-                    }
-                    bodytext {
-                      type = string
-                    }
-                    image {
-                      type = images
-                      properties = uid, title, description, alternative
-                    }
-                    sorting {
-                      type = int
-                    }
-                  }
+                  mapping < plugin.tx_monkeyhead_api.settings.tables.tt_content.mapping
                 }
               }
             }
