@@ -19,8 +19,8 @@ monkeyhead_base {
         header = Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
         replace = 1
       }
-      100 {
-        # header = Content-Type: application/json
+      40 {
+        header = Content-Type: application/json
         replace = 1
       }
     }
