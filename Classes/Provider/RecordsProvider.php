@@ -40,6 +40,7 @@ class RecordsProvider extends BaseProvider
                     $provider->setArgument('uid', $requested_id);
                 }
                 $provided_result = $provider->fetchData();
+
             } else {
                 $selection = SelectionService::prepare($this->getConfiguration('selection/' . $table_name, []));
                 $selection['pid'] = SelectionService::make($this->getArgument('page', 0));
@@ -55,12 +56,8 @@ class RecordsProvider extends BaseProvider
                 }
 
             } else {
-                if ($requested_id > 0) {
-                    $mapped_result[] = MappingService::transform($provided_result, $mapping, $table_name);
-                } else {
-                    foreach ($provided_result as $record) {
-                        $mapped_result[] = MappingService::transform($record, $mapping, $table_name);
-                    }
+                foreach ($provided_result as $record) {
+                    $mapped_result[] = MappingService::transform($record, $mapping, $table_name);
                 }
             }
 
