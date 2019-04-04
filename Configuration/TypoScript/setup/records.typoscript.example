@@ -17,6 +17,13 @@ plugin.tx_monkeyhead_api {
         }
       }
 
+      rendering {
+        tx_news_domain_model_news {
+          provider = Lfda\Monkeyhead\Adaptors\News\NewsProvider
+          renderer = Lfda\Monkeyhead\Adaptors\News\NewsRenderer
+        }
+      }
+
       mapping {
 
         tx_news_domain_model_tag {

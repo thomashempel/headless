@@ -20,7 +20,7 @@ monkeyhead_base {
         replace = 1
       }
       100 {
-        header = Content-Type: application/json
+        # header = Content-Type: application/json
         replace = 1
       }
     }

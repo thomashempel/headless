@@ -109,7 +109,7 @@ class MonkeyheadController extends ActionController
         $records_provider->setConfiguration($this->settings['records']);
         $records_provider->setArgument('page', intval($GLOBALS['TSFE']->id));
         $records_provider->setArgument('tables', GeneralUtility::trimExplode(',', $_REQUEST['t']));
-        $records_provider->setArgument('id', intval($_REQUEST['id']));
+        $records_provider->setArgument('record_id', intval($_REQUEST['rid']));
         $records = $records_provider->fetchData();
 
         return json_encode($records);

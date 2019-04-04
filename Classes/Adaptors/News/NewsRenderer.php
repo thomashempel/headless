@@ -1,6 +1,6 @@
 <?php
 
-namespace Lfda\Monkeyhead\Renderer;
+namespace Lfda\Monkeyhead\Adaptors\News;
 
 use GeorgRinger\News\Controller\NewsController;
 use GeorgRinger\News\Domain\Repository\NewsRepository;

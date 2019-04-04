@@ -10,7 +10,7 @@ plugin.tx_monkeyhead_api {
               list_type = news_pi1
             }
 
-            renderer = Lfda\Monkeyhead\Renderer\NewsRenderer
+            renderer = Lfda\Monkeyhead\Adaptors\News\NewsRenderer
 
             options {
               table = tx_news_domain_model_news
