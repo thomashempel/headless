@@ -5,8 +5,7 @@ monkeyhead_image {
   typeNum = 2344
 
   config {
-    no_cache = 1
-
+    disableCharsetHeader = 1
     additionalHeaders {
       40 >
       50 {

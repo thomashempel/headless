@@ -176,7 +176,15 @@ class MonkeyheadController extends ActionController
 
                 case 'data':
                 default:
-                    $typoScriptFrontendController->setContentType($processedImage->getMimeType());
+                    header_remove('Pragma');
+                    header_remove('Content-Language');
+
+                    $dt = new \DateTime();
+                    $dt = $dt->add(date_interval_create_from_date_string('1 day'));
+                    header('Expires: ' . $dt->format('D, d M Y H:i:s \G\M\T'));
+                    header('Content-Length: ' . $processedImage->getSize());
+                    header('Content-Type: ' . $processedImage->getMimeType());
+
                     return $processedImage->getContents();
             }
         }
