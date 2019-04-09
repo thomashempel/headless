@@ -5,7 +5,7 @@ monkeyhead_base {
     disableAllHeaderCode = 1
     disableBodyTag = true
     debug = 0
-    no_cache = 0
+    no_cache = 1
     additionalHeaders {
       10 {
         header = Access-Control-Allow-Origin: {$monkeyhead.header.allow-origin}
