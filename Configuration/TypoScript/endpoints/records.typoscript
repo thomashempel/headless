@@ -4,6 +4,10 @@ monkeyhead_records < monkeyhead_base
 monkeyhead_records {
   typeNum = 2345
 
+  config {
+    no_cache = 1
+  }
+
   10 {
     action = records
     switchableControllerActions {

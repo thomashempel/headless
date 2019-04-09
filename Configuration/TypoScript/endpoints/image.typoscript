@@ -4,7 +4,18 @@ monkeyhead_image < monkeyhead_base
 monkeyhead_image {
   typeNum = 2344
 
-  config.additionalHeaders.40 >
+  config {
+    no_cache = 1
+
+    additionalHeaders {
+      40 >
+      50 {
+        header = Cache-Control: max-age=86400, public
+        replace = 1
+      }
+    }
+  }
+
 
   10 {
     action = image
