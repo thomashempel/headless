@@ -28,8 +28,13 @@ class ContentProvider extends BaseProvider
         $mapping = $this->getConfiguration('mapping', []);
         $render_configs = $this->getConfiguration('rendering', []);
         $group_by = $this->getConfiguration('options/group_by', false);
+        $groups = GeneralUtility::trimExplode(',', $this->getConfiguration('options/groups', ''));
 
         $result = [];
+
+        foreach ($groups as $group) {
+            $result[$group] = [];
+        }
 
         while ($row = $contents->fetch()) {
             $transformed = MappingService::transform($row, $mapping, $this->table);
