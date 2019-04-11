@@ -24,7 +24,7 @@ class NewsRenderer
         $configurationManager = $objectManager->get(ConfigurationManagerInterface::class);
 
         $news_settings_ts = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'news');
-        $news_settings_ff = $content['flexform'];
+        $news_settings_ff = $content[$options['flexformField']];
 
         $settings = array_merge_recursive($news_settings_ts, $news_settings_ff['settings']);
 
