@@ -1,6 +1,6 @@
 <?php
 
-namespace Lfda\Monkeyhead\Service;
+namespace T12\Monkeyhead\Service;
 
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;

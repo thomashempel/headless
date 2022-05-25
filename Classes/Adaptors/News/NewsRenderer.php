@@ -1,10 +1,10 @@
 <?php
 
-namespace Lfda\Monkeyhead\Adaptors\News;
+namespace T12\Monkeyhead\Adaptors\News;
 
 use GeorgRinger\News\Controller\NewsController;
 use GeorgRinger\News\Domain\Repository\NewsRepository;
-use Lfda\Monkeyhead\Service\MappingService;
+use T12\Monkeyhead\Service\MappingService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;

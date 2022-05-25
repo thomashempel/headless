@@ -1,10 +1,10 @@
 <?php
 
-namespace Lfda\Monkeyhead\Provider;
+namespace T12\Monkeyhead\Provider;
 
 use Doctrine\DBAL\Driver\Mysqli\MysqliStatement;
-use Lfda\Monkeyhead\Service\MappingService;
-use Lfda\Monkeyhead\Service\SelectionService;
+use T12\Monkeyhead\Service\MappingService;
+use T12\Monkeyhead\Service\SelectionService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class RecordsProvider extends BaseProvider

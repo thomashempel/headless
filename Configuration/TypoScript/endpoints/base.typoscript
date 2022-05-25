@@ -31,7 +31,7 @@ monkeyhead_base {
     userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
     extensionName = Monkeyhead
     pluginName = Api
-    vendorName = Lfda
+    vendorName = T12
     controller = Monkeyhead
   }
 }

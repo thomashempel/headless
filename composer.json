@@ -1,5 +1,5 @@
 {
-  "name": "lfda/monkeyhead",
+  "name": "t12/monkeyhead",
   "type": "typo3-cms-extension",
   "description": "Read Only TYPO3 JSON frontend",
   "license": ["GPL-2.0-or-later"],
@@ -8,33 +8,20 @@
     {
       "name": "Thomas Hempel",
       "role": "Developer",
-      "email": "thomas.hempel@lfda.de"
+      "email": "thomas@t12.online"
     }
   ],
   "require": {
-    "typo3/cms-core": "^9.5"
+    "typo3/cms-core": "^11.5"
   },
   "config": {
     "vendor-dir": ".Build/vendor",
     "bin-dir": ".Build/bin"
   },
-  "require-dev": {
-    "typo3/testing-framework": "^4.11.1"
-  },
   "autoload": {
     "psr-4": {
-      "Lfda\\Monkeyhead\\": "Classes/"
+      "T12\\Monkeyhead\\": "Classes/"
     }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Lfda\\Monkeyhead\\Tests\\": "Tests"
-    }
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
-    ]
   },
   "extra": {
     "branch-alias": {

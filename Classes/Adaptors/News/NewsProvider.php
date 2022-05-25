@@ -1,9 +1,9 @@
 <?php
 
-namespace Lfda\Monkeyhead\Adaptors\News;
+namespace T12\Monkeyhead\Adaptors\News;
 
 use GeorgRinger\News\Domain\Repository\NewsRepository;
-use Lfda\Monkeyhead\Provider\BaseProvider;
+use T12\Monkeyhead\Provider\BaseProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;

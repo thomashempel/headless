@@ -1,16 +1,16 @@
 <?php
 
-namespace Lfda\Monkeyhead\Controller;
+namespace T12\Monkeyhead\Controller;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Service\ImageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-use Lfda\Monkeyhead\Provider\ContentProvider;
-use Lfda\Monkeyhead\Provider\ImageProvider;
-use Lfda\Monkeyhead\Provider\PagesProvider;
-use Lfda\Monkeyhead\Provider\RecordsProvider;
-use Lfda\Monkeyhead\Service\MappingService;
+use T12\Monkeyhead\Provider\ContentProvider;
+use T12\Monkeyhead\Provider\ImageProvider;
+use T12\Monkeyhead\Provider\PagesProvider;
+use T12\Monkeyhead\Provider\RecordsProvider;
+use T12\Monkeyhead\Service\MappingService;
 
 class MonkeyheadController extends ActionController
 {

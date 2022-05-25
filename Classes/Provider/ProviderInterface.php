@@ -1,5 +1,5 @@
 <?php
-namespace Lfda\Monkeyhead\Provider;
+namespace T12\Monkeyhead\Provider;
 
 interface ProviderInterface
 {

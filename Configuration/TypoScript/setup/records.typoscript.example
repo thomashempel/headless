@@ -19,8 +19,8 @@ plugin.tx_monkeyhead_api {
 
       rendering {
         tx_news_domain_model_news {
-          provider = Lfda\Monkeyhead\Adaptors\News\NewsProvider
-          renderer = Lfda\Monkeyhead\Adaptors\News\NewsRenderer
+          provider = T12\Monkeyhead\Adaptors\News\NewsProvider
+          renderer = T12\Monkeyhead\Adaptors\News\NewsRenderer
         }
       }
 

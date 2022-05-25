@@ -5,7 +5,7 @@ call_user_func(
     function() {
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'Lfda.Monkeyhead',
+            'T12.Monkeyhead',
             'Api',
             [
                 'Monkeyhead' => 'pages, content, records, image'
